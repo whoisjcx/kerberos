@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class AS {
 	
@@ -16,7 +17,10 @@ public class AS {
 		private Socket socket=null;  
 		private BufferedReader reader;
 		private PrintWriter writer;
-		
+		private ArrayList<String> s=new ArrayList<String>();
+		private ArrayList<String> key=new ArrayList<String>();
+		private ArrayList<String> ws=new ArrayList<String>();
+		data d=new data();
 		public SendThread(Socket socket){
 			this.socket=socket;
 		}
@@ -27,7 +31,9 @@ public class AS {
 			try {
 				reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				writer=new PrintWriter(socket.getOutputStream());
-				String str=reader.readLine();
+				String str="";
+				while((str+=reader.readLine())!=null){}	//str为从client接收加密后的数据
+				s=d.decode(str);						//解密为list
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -35,6 +41,7 @@ public class AS {
 			//!!!!!!!!!!!!!!!!!!!!!
 			
 			String willsend="";
+			
 			writer.println(willsend);
 			writer.flush();
 			
