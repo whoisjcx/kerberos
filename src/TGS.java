@@ -86,7 +86,7 @@ public class TGS {
 		}
 	}
 	
-	public void ASstart()
+	public void TGSstart()
 	{
 		new ListenThread().start();
 	}
