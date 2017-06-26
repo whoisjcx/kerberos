@@ -60,9 +60,9 @@ public class data {
 				String t="";
 				t+=S.charAt(0);
 				ret.add(t);
-				ret.add(S.substring(2,10));
-				ret.add(S.substring(10,18));
-				ret.add(S.substring(18,26));
+				ret.add(S.substring(1,9));
+				ret.add(S.substring(9,17));
+				ret.add(S.substring(17,25));
 			};break;
 			case 1:{
 				ret=new ArrayList<String>();

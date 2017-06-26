@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -20,7 +21,7 @@ public class AS {
 		private BufferedReader reader;
 		private PrintWriter writer;
 		private ArrayList<String> s=new ArrayList<String>();
-		private ArrayList<String> key=new ArrayList<String>();	//TODO 要从数据库读
+		private ArrayList<String> key=new ArrayList<String>();	//TODO 要从数据库读  
 		private ArrayList<String> ws=new ArrayList<String>();
 		data d=new data();
 		String willsend="";
@@ -31,18 +32,25 @@ public class AS {
 		@Override
 		public void run(){
 			//String ip=socket.getInetAddress().getHostAddress();
+			System.out.println("connected!");
 			try {
-				reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				writer=new PrintWriter(socket.getOutputStream());
+				reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
+				writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
 				String str="";
 				String tmp="";
-				while((tmp=reader.readLine())!=null){
-					if(tmp.equals("end")) break;
-					str+=tmp;
-					str+="\n";
+				int tmp2;
+				int flag=0;
+				while((tmp2=reader.read())!=-1){
+					str+=(char)tmp2;
+					if(tmp2=='0'){
+						flag++;
+						if(flag==4) break;
+					}
+					else flag=0;
 				}	//str为从client接收的数据
-				str=str.substring(0, str.length()-1);
-				d.decode(str, key);
+				str=str.substring(0, str.length()-4);
+				System.out.println(str);
+				s=d.decode(str, key);
 				tmp="";
 				tmp+=(char)1;
 				ws.add(tmp);
@@ -58,21 +66,46 @@ public class AS {
 				ws.add(getip(socket));
 				ws.add(ws.get(2));
 				ws.add(ws.get(4));
+				tmp=d.encode(ws, key);
+				willsend=tmp;
+				
+				/***测试
 				for(int i=0;i<ws.size();++i){
 					System.out.println(i+":"+ws.get(i));
 				}
-				tmp=d.encode(ws, key);
-				willsend=tmp;
+
+				key.remove(0);
+				for(int i=0;i<key.size();++i){
+					System.out.println("key----:"+key.get(i));
+				}
+				ws=d.decode(tmp, key);
+				for(int i=0;i<ws.size();++i){
+					System.out.println(i+":"+ws.get(i));
+				}
+				for(int i=0;i<ws.size();++i){
+					for(int j=0;j<ws.get(i).length();++j){
+						System.out.print((int)ws.get(i).charAt(j));
+					}
+					System.out.println("");
+				}
+
+				for(int i=0;i<willsend.length();++i){
+					System.out.print((int)willsend.charAt(i)+"-");
+				}
+				System.out.println("");
+				***/
+				willsend+="0000";
+				//System.out.println("size----:"+tmp.length());
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
-			
+			} 
+			System.out.println("willsend----:"+willsend);
 			writer.println(willsend);
 			writer.flush();
 			writer.close();
 			try {
 				reader.close();
-				socket.close();
+				//socket.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -86,6 +119,7 @@ public class AS {
 		Socket socket=null;
 		@Override
 		public void run(){
+			System.out.println("Listening");
 			try {
 					server=new ServerSocket(port);
 				} catch (IOException e) {
@@ -145,15 +179,6 @@ public class AS {
 		String s="";
 		AS as=new AS();
 		as.ASstart();
-		try {
-			Socket socket=new Socket("127.0.0.1",1234);
-			s=as.getip(socket);
-			System.out.println(s);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(System.currentTimeMillis());
 		
 	}
 }
