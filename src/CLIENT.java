@@ -47,6 +47,7 @@ public class CLIENT {
 			reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer=new PrintWriter(socket.getOutputStream());
 			writer.println(CtoAS0000());
+			writer.flush();
 			
 			String str1="";
 			String temstr="";
@@ -68,7 +69,7 @@ public class CLIENT {
 			reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer=new PrintWriter(socket.getOutputStream());
 			writer.println(CtoTGS0010());
-			
+			writer.flush();
 			String str2="";
 			String temstr="";
 			while ((temstr = reader.readLine()) != null) {
@@ -89,14 +90,14 @@ public class CLIENT {
 			reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer=new PrintWriter(socket.getOutputStream());
 			writer.println(CtoS0100());
-			
+			writer.flush();
 			String str3="";
 			String temstr="";
 			while ((temstr = reader.readLine()) != null) {
 		        str3+=temstr;
 		      }
 			
-			//收到信息保存在str3中
+			//收到信息保存在str2中
 			writer.flush();
 		}
 		
