@@ -96,7 +96,7 @@ public class CLIENT {
 		        str3+=temstr;
 		      }
 			
-			//收到信息保存在str2中
+			//收到信息保存在str3中
 			writer.flush();
 		}
 		
