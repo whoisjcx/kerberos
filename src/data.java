@@ -56,26 +56,26 @@ public class data {
 		char B=S.charAt(0);
 		switch (B){
 			case 0:{
-				ret=new ArrayList<String>(4);
+				ret=new ArrayList<String>();
 				String t="";
 				t+=S.charAt(0);
-				ret.set(0,t);
-				ret.set(1,S.substring(2,10));
-				ret.set(2,S.substring(10,18));
-				ret.set(3,S.substring(18,26));
+				ret.add(t);
+				ret.add(S.substring(2,10));
+				ret.add(S.substring(10,18));
+				ret.add(S.substring(18,26));
 			};break;
 			case 1:{
-				ret=new ArrayList<String>(6);
+				ret=new ArrayList<String>();
 				String t="",tmp1="";
 				t+=S.charAt(0);
-				ret.set(0,t);
+				ret.add(t);
 				tmp1=S.substring(1);
 				tmp1=des.Dectyptions(tmp1, Key.get(0));
-				ret.set(1,tmp1.substring(0,8));
-				ret.set(2,tmp1.substring(8,16));
-				ret.set(3,tmp1.substring(16,24));
-				ret.set(4,tmp1.substring(24,32));
-				ret.set(5,tmp1.substring(32));
+				ret.add(tmp1.substring(0,8));
+				ret.add(tmp1.substring(8,16));
+				ret.add(tmp1.substring(16,24));
+				ret.add(tmp1.substring(24,32));
+				ret.add(tmp1.substring(32));
 			};break;
 			case 2:{
 				ret=new ArrayList<String>(11);

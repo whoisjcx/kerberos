@@ -20,9 +20,10 @@ public class AS {
 		private BufferedReader reader;
 		private PrintWriter writer;
 		private ArrayList<String> s=new ArrayList<String>();
-		private ArrayList<String> key=new ArrayList<String>();
+		private ArrayList<String> key=new ArrayList<String>();	//TODO 要从数据库读
 		private ArrayList<String> ws=new ArrayList<String>();
 		data d=new data();
+		String willsend="";
 		public SendThread(Socket socket){
 			this.socket=socket;
 		}
@@ -34,23 +35,20 @@ public class AS {
 				reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				writer=new PrintWriter(socket.getOutputStream());
 				String str="";
-				//while((str+=reader.readLine())!=null){}	//str为从client接收加密后的数据
-				//s=d.decode(str,key);						//解密为list
-				
-				/***
-				 *test
-				 */
 				String tmp="";
-				tmp+=(char)0;
-				s.add(tmp);
-				s.add("idc12345");
-				s.add("idtgs123");
-				s.add(getTS());
-				
+				while((tmp=reader.readLine())!=null){
+					if(tmp.equals("end")) break;
+					str+=tmp;
+					str+="\n";
+				}	//str为从client接收的数据
+				str=str.substring(0, str.length()-1);
+				d.decode(str, key);
 				tmp="";
 				tmp+=(char)1;
 				ws.add(tmp);
 				tmp=randomkey();
+				key.add(tmp);
+				key.add("00000000");
 				ws.add(tmp);
 				ws.add(IDtgs);
 				ws.add(getTS());
@@ -63,18 +61,14 @@ public class AS {
 				for(int i=0;i<ws.size();++i){
 					System.out.println(i+":"+ws.get(i));
 				}
-				
+				tmp=d.encode(ws, key);
+				willsend=tmp;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//!!!!!!!!!!!!!!!!!!!!!
-			
-			String willsend="";
 			
 			writer.println(willsend);
 			writer.flush();
-			
 			writer.close();
 			try {
 				reader.close();
