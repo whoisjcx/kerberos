@@ -22,8 +22,15 @@ public class data {
 				ret+=des.Encryptions(tmp1, Key.get(1));
 			};break;
 			case 2:{
-				
-				
+				ret+=S.get(0);
+				ret+=S.get(1);
+				ret+=S.get(2);
+				String tmp1="";
+				tmp1+=S.get(3);
+				tmp1+=S.get(4);
+				tmp1+=S.get(5);
+				tmp1=des.Encryptions(tmp1, Key.get(0));
+				ret+=tmp1;
 			};break;
 			case 3:{
 				
@@ -71,6 +78,10 @@ public class data {
 				ret.set(5,tmp1.substring(32));
 			};break;
 			case 2:{
+				ret=new ArrayList<String>(11);
+				String t="",tmp1="";
+				t+=S.charAt(0);
+				ret.set(0,t);
 				
 				
 			};break;
