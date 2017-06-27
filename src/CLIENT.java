@@ -1,3 +1,8 @@
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,6 +12,13 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class CLIENT {
 
@@ -254,5 +266,79 @@ public class CLIENT {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	class ClientUI extends JFrame{
+
+		JButton bt1=new JButton("请求服务");	
+		JButton bt2=new JButton("取消");
+		
+		JTextField t1=new JTextField(15);
+		JLabel l1=new JLabel("目的ip");
+		
+		JPanel p1=new JPanel();
+		JPanel p2=new JPanel();
+		//JPanel p3=new JPanel();
+		//JPanel p4=new JPanel();
+		
+		ClientUI(){
+			
+			JFrame jf = new JFrame("Client");
+			jf.setSize(300,150);
+			Container container=jf.getContentPane();
+			FlowLayout fleft=new FlowLayout(FlowLayout.CENTER,10,10);
+			FlowLayout fright=new FlowLayout(FlowLayout.CENTER,10,10);
+			
+			BorderLayout border=new BorderLayout(10,10);
+			container.setLayout(border);
+			p1.setLayout(fleft);
+			p1.add(l1);
+			p1.add(t1);
+			
+			p2.setLayout(fright);
+			p2.add(bt1);
+			p2.add(bt2);
+			
+			container.add(p1, BorderLayout.NORTH);
+			container.add(p2, BorderLayout.CENTER);
+			
+			
+			bt1.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){	
+					IP=t1.getText();
+					jf.setVisible(false);
+					method1();
+		
+				}
+			});
+			
+			bt2.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					method2();
+				}
+			});
+			
+			jf.setVisible(true);
+		}
+		
+		private String IP;
+		
+		String getIP()
+		{
+			return IP;
+		}
+		
+		void method1()
+		{
+			IP=t1.getText();
+			JOptionPane.showMessageDialog(this, "选择服务","服务",JOptionPane.INFORMATION_MESSAGE);
+			
+		}	
+		
+		void method2()
+		{
+			t1.setText("");
+		}	
+		
 	}
 }
