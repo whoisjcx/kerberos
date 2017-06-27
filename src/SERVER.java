@@ -9,12 +9,13 @@ import java.util.ArrayList;
 
 public class SERVER {
 	
-	private int port;	//监听端口
+	private int port=3456;	//监听端口
 	
 	class SendThread extends Thread{
 		private Socket socket=null;  
 		private BufferedReader reader;
 		private PrintWriter writer;
+		private String Ktgsv="00000000";	//TODO 数据库
 		
 		private ArrayList<String> key=new ArrayList<String>();	// 要从数据库读  
 		data d=new data();
@@ -27,7 +28,7 @@ public class SERVER {
 		public void run(){
 			//String ip=socket.getInetAddress().getHostAddress();
 			VtoC vc=new VtoC();
-			
+			System.out.println("Connected");
 			try {
 				reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
 				writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
@@ -36,23 +37,18 @@ public class SERVER {
 				int tmp2;
 				int flag=0;
 				while((tmp2=reader.read())!=-1){
+					if(tmp2=='完') break;
 					str+=(char)tmp2;
-					if(tmp2=='0'){
-						flag++;
-						if(flag==4) break;
-					}
-					else flag=0;
-				}	//str为从client接收的数据
-				str=str.substring(0, str.length()-4);
+				}
 				System.out.println("server47行:"+str);
-				
+				key.add(Ktgsv);
 				vc.setS(d.decode(str, key));
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//!!!!!!!!!!!!!!!!!!!!!
+
 			vc.vtoc();
 			String willsend=d.encode(vc.getnewS(),vc.getnewKey());
 			writer.println(willsend);
@@ -75,6 +71,7 @@ public class SERVER {
 		Socket socket=null;
 		@Override
 		public void run(){
+			System.out.println("Server Listening");
 			try {
 					server=new ServerSocket(port);
 				} catch (IOException e) {
@@ -91,12 +88,6 @@ public class SERVER {
 				if(socket!=null)
 				{
 					new SendThread(socket).start();
-				}
-				try {
-					server.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
 		}
@@ -128,6 +119,11 @@ class VtoC{
 	
 	public void vtoc()
 	{
+		for(int i=0;i<S.size();++i)
+		{
+			System.out.println(S.get(i));
+		}
+		
 		newkey.add(S.get(1));
 		char ch=5;
 		String tem="";
@@ -136,7 +132,7 @@ class VtoC{
 		long ll=Long.parseLong(S.get(9));
 		ll+=1;
 		tem=new String(Long.toString(ll));
-		newkey.add(tem);
+		newS.add(tem);
 	}
 	
 	public ArrayList<String> getnewKey(){

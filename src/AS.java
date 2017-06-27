@@ -48,14 +48,10 @@ public class AS {
 				int tmp2;
 				int flag=0;
 				while((tmp2=reader.read())!=-1){
+					if(tmp2=='完')break;
 					str+=(char)tmp2;
-					if(tmp2=='0'){
-						flag++;
-						if(flag==4) break;
-					}
-					else flag=0;
 				}	//str为从client接收的数据
-				str=str.substring(0, str.length()-4);
+				//str=str.substring(0, str.length()-4);
 				System.out.println(str);
 				t1.setText(t1.getText()+"收到请求！\n\n");
 				s=d.decode(str, key);

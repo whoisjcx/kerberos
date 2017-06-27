@@ -7,6 +7,7 @@ public class hello {
 		A.set(0, 9);
 		System.out.println(A.get(0));
 		char c=(char)254;
+		
 		System.out.println((int)c);
 		for(int i=0;i<256;i++){
 			System.out.println(((char)i)==-1);

@@ -61,7 +61,7 @@ public class data {
 				
 			};break;
 		}
-		return ret+"0000";
+		return ret+"Íê";
 	}
 	
 	ArrayList<String> decode(String S,ArrayList<String> Key){

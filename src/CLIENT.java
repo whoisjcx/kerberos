@@ -67,14 +67,9 @@ public class CLIENT {
 			int tmp2;
 			int flag=0;
 			while((tmp2=reader.read())!=-1){
+				if(tmp2=='完') break;
 				str1+=(char)tmp2;
-				if(tmp2=='0'){
-					flag++;
-					if(flag==4) break;
-				}
-				else flag=0;
 			}	//str为从client接收的数据
-			str1=str1.substring(0, str1.length()-4);
 			res=d.decode(str1, key);
 			
 
@@ -126,14 +121,9 @@ public class CLIENT {
 			int tmp2;
 			int flag=0;
 			while((tmp2=reader.read())!=-1){
+				if(tmp2=='完') break;
 				str2+=(char)tmp2;
-				if(tmp2=='0'){
-					flag++;
-					if(flag==4) break;
-				}
-				else flag=0;
 			}	
-			str2=str2.substring(0, str2.length()-4);	//从TGS接收的数据
 			System.out.println(str2);
 			res=d.decode(str2,key);
 			System.out.println("key----:"+key.get(0));
@@ -164,15 +154,15 @@ public class CLIENT {
 			int tmp2;
 			int flag=0;
 			while((tmp2=reader.read())!=-1){
+				if(tmp2=='完') break;
 				str+=(char)tmp2;
-				if(tmp2=='0'){
-					flag++;
-					if(flag==4) break;
-				}
-				else flag=0;
-			}	//str为从client接收的数据
-			str=str.substring(0, str.length()-4);
+			}
 			System.out.println(str);
+			ArrayList<String> al= d.decode(str, cv.getnewKey());
+			for(int i=0;i<al.size();++i)
+			{
+				System.out.println(al.get(i));
+			}
 			
 			//收到信息保存在str2中
 			writer.flush();
@@ -246,6 +236,7 @@ public class CLIENT {
 		}
 		
 		public void ctov(){
+			
 			newkey.add(S.get(1));
 			char ch=4;
 			String tem="";
@@ -259,6 +250,7 @@ public class CLIENT {
 	}
 	
 	public static void main(String args[]){
+		ClientUI ui=new ClientUI();
 		CLIENT cl=new CLIENT(1234,"127.0.0.1","127.0.0.1","127.0.0.1");
 		try {
 			cl.SendAndReceive();
@@ -268,17 +260,18 @@ public class CLIENT {
 		}
 	}
 	
-	class ClientUI extends JFrame{
+	static class ClientUI extends JFrame{
 
 		JButton bt1=new JButton("请求服务");	
 		JButton bt2=new JButton("取消");
 		
 		JTextField t1=new JTextField(15);
-		JLabel l1=new JLabel("目的ip");
-		
+		JTextField t2=new JTextField(15);
+		JLabel l1=new JLabel("用户名");
+		JLabel l2=new JLabel("要访问服务器名");
 		JPanel p1=new JPanel();
 		JPanel p2=new JPanel();
-		//JPanel p3=new JPanel();
+		JPanel p3=new JPanel();
 		//JPanel p4=new JPanel();
 		
 		ClientUI(){
@@ -298,10 +291,12 @@ public class CLIENT {
 			p2.setLayout(fright);
 			p2.add(bt1);
 			p2.add(bt2);
+			p3.add(l2);
+			p3.add(t2);
 			
 			container.add(p1, BorderLayout.NORTH);
-			container.add(p2, BorderLayout.CENTER);
-			
+			container.add(p3, BorderLayout.CENTER);
+			container.add(p2, BorderLayout.SOUTH);
 			
 			bt1.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){	

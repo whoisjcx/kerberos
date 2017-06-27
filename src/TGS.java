@@ -53,14 +53,9 @@ public class TGS {
 				int flag=0;
 				System.out.println("Connected");
 				while((tmp2=reader.read())!=-1){
+					if(tmp2=='完') break;
 					str+=(char)tmp2;
-					if(tmp2=='0'){
-						flag++;
-						if(flag==4) break;
-					}
-					else flag=0;
 				}	
-				str=str.substring(0, str.length()-4);
 				System.out.println("str size:"+str.length());
 				System.out.println("str----:"+str);
 				t1.setText(t1.getText()+"收到请求！\n\n");
