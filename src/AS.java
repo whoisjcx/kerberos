@@ -7,6 +7,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.*;
 
 public class AS {
 	
@@ -33,6 +37,7 @@ public class AS {
 		public void run(){
 			//String ip=socket.getInetAddress().getHostAddress();
 			System.out.println("connected!");
+			t1.setText(t1.getText()+"connected!\n\n");
 			try {
 				reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
 				writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
@@ -50,6 +55,7 @@ public class AS {
 				}	//str为从client接收的数据
 				str=str.substring(0, str.length()-4);
 				System.out.println(str);
+				t1.setText(t1.getText()+"收到请求！\n\n");
 				s=d.decode(str, key);
 				tmp="";
 				tmp+=(char)1;
@@ -101,6 +107,7 @@ public class AS {
 			} 
 			System.out.println("willsend----:"+willsend);
 			writer.println(willsend);
+			t1.setText(t1.getText()+"已发送认证！\n\n");
 			writer.flush();
 			writer.close();
 			try {
@@ -179,6 +186,34 @@ public class AS {
 		String s="";
 		AS as=new AS();
 		as.ASstart();
-		
+		MyFramePanel frame = new MyFramePanel();
+		//t1.setText(t1.getText()+"\nsdfg\n\n");
 	}
+	static TextArea t1= new TextArea(23,78);
+
+	static class MyFramePanel extends JFrame{
+		
+		
+		//TextArea t1= new TextArea(23,78); //构造一个文本域
+			
+		JPanel p1 = new JPanel();
+		 
+		
+	MyFramePanel(){
+		this.setSize(600,400);
+		setResizable(false);
+		Container container = this.getContentPane();
+		container.setLayout(new FlowLayout());
+				
+		p1.add(t1);
+		t1.setText("Listening......\n\n");	
+		container.add(p1);
+		
+		this.setTitle("AS服务器");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
+	}
+	}
+	
 }
+
