@@ -1,3 +1,6 @@
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.TextArea;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,6 +10,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class TGS {
 	
@@ -37,6 +43,7 @@ public class TGS {
 		public void run(){
 			//String ip=socket.getInetAddress().getHostAddress();
 			System.out.println("Connected");
+			t1.setText(t1.getText()+"connected!\n\n");
 			try {
 				reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
 				writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
@@ -56,6 +63,7 @@ public class TGS {
 				str=str.substring(0, str.length()-4);
 				System.out.println("str size:"+str.length());
 				System.out.println("str----:"+str);
+				t1.setText(t1.getText()+"收到请求！\n\n");
 				key.add(Kastgs);
 				s=d.decode(str, key);
 				
@@ -91,6 +99,7 @@ public class TGS {
 			}
 			System.out.println(willsend);
 			writer.println(willsend);
+			t1.setText(t1.getText()+"已发送认证！\n\n");
 			writer.flush();
 			
 			writer.close();
@@ -163,6 +172,30 @@ public class TGS {
 	public static void main(String args[]){
 		TGS tgs=new TGS();
 		tgs.TGSstart();
+		MyFramePanel2 frame = new MyFramePanel2();
+	}
+	
+	static TextArea t1= new TextArea(23,78);
+
+	static class MyFramePanel2 extends JFrame{
+				
+		JPanel p1 = new JPanel();
+		 
+		
+	MyFramePanel2(){
+		this.setSize(600,400);
+		setResizable(false);
+		Container container = this.getContentPane();
+		container.setLayout(new FlowLayout());
+				
+		p1.add(t1);
+		t1.setText("Listening......\n\n");	
+		container.add(p1);
+		
+		this.setTitle("TGS服务器");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
+	}
 	}
 }
 
