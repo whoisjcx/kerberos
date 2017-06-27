@@ -137,7 +137,7 @@ public class data {
 	public static void main(String[] args){
 		int x=19;
 		String s=Integer.toString(x);
-		s="0000"+s;
+		s="00000"+s;
 		System.out.println(new Integer(s));
     }
 	
