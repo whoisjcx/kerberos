@@ -26,21 +26,6 @@ public class CLIENT {
 		key.add("00000000");
 	}
 	
-	// 返回以下三个的包
-	String CtoAS0000()
-	{
-		return "";
-	}
-	
-	String CtoTGS0010()
-	{
-		return "";
-	}
-	
-	String CtoS0100()
-	{
-		return "";
-	}
 	
 	void SendAndReceive() throws UnknownHostException, IOException
 	{
