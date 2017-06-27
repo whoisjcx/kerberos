@@ -8,7 +8,9 @@ public class hello {
 		System.out.println(A.get(0));
 		char c=(char)254;
 		System.out.println((int)c);
-		
+		for(int i=0;i<256;i++){
+			System.out.println(((char)i)==-1);
+		}
 		/***
 		System.out.println(Long.toString(e).substring(1));
 		desdes tem=new desdes();

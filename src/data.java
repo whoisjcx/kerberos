@@ -51,7 +51,8 @@ public class data {
 				
 			};break;
 			case 5:{
-				
+				ret+=S.get(0);
+				ret+=des.Encryptions(S.get(1), Key.get(0));
 			};break;
 			case 6:{
 				
@@ -147,7 +148,11 @@ public class data {
 				ret.add(tmp1.substring(16,24));
 			};break;
 			case 5:{
-				
+				ret=new ArrayList<String>();
+				String t="",tmp1="";
+				t+=S.charAt(0);
+				ret.add(t);
+				ret.add(des.Dectyptions(S.substring(1), Key.get(0)));
 			};break;
 			case 6:{
 				
