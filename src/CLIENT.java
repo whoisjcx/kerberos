@@ -143,15 +143,29 @@ public class CLIENT {
 		socket=new Socket(ipSERVER,port);
 		if(socket!=null)
 		{
-			reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			writer=new PrintWriter(socket.getOutputStream());
-			writer.println(CtoS0100());
+			CtoV cv=new CtoV();
+			cv.setS(res);
+			cv.setIDc(IDc);
+			cv.ctov();
+			
+			reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
+			writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
+			writer.println(d.encode(cv.getnewS(), cv.getnewKey()));
 			writer.flush();
-			String str3="";
-			String temstr="";
-			while ((temstr = reader.readLine()) != null) {
-		        str3+=temstr;
-		      }
+			String str="";
+			//String tmp="";
+			int tmp2;
+			int flag=0;
+			while((tmp2=reader.read())!=-1){
+				str+=(char)tmp2;
+				if(tmp2=='0'){
+					flag++;
+					if(flag==4) break;
+				}
+				else flag=0;
+			}	//str为从client接收的数据
+			str=str.substring(0, str.length()-4);
+			System.out.println(str);
 			
 			//收到信息保存在str2中
 			writer.flush();
@@ -189,6 +203,51 @@ public class CLIENT {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	class CtoV{
+		public ArrayList<String> getnewKey(){
+			return newkey;
+		}
+		
+		public ArrayList<String> getnewS(){
+			return newS;
+		}
+		
+		public void setS(ArrayList<String> S)
+		{
+			this.S=S;
+		}
+		public void setIDc(String str)
+		{
+			this.IDc=str;
+		}
+		
+		private String IDc;
+		private ArrayList<String> S=new ArrayList<String>();
+		
+		private ArrayList<String> newkey=new ArrayList<String>();
+		private ArrayList<String> newS=new ArrayList<String>();
+		
+		public ArrayList<String> Key(){
+			return newkey;
+		}
+		
+		public ArrayList<String> S(){
+			return newS;
+		}
+		
+		public void ctov(){
+			newkey.add(S.get(1));
+			char ch=4;
+			String tem="";
+			tem+=ch;
+			newS.add(tem);  // 0
+			newS.add(S.get(4));  //1
+			newS.add(IDc);
+			newS.add(getIP());
+			newS.add(getTS());
 		}
 	}
 	
