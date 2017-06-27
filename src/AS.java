@@ -25,8 +25,10 @@ public class AS {
 		private BufferedReader reader;
 		private PrintWriter writer;
 		private ArrayList<String> s=new ArrayList<String>();
-		private ArrayList<String> key=new ArrayList<String>();	//TODO 要从数据库读  
+		private ArrayList<String> key=new ArrayList<String>(); 
 		private ArrayList<String> ws=new ArrayList<String>();
+		private String Kastgs="00000000";
+		private String Kc="00000000";	//数据库
 		data d=new data();
 		String willsend="";
 		public SendThread(Socket socket){
@@ -61,8 +63,8 @@ public class AS {
 				tmp+=(char)1;
 				ws.add(tmp);
 				tmp=randomkey();
-				key.add(tmp);
-				key.add("00000000");
+				key.add(Kastgs);
+				key.add(Kc);
 				ws.add(tmp);
 				ws.add(IDtgs);
 				ws.add(getTS());

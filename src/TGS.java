@@ -25,7 +25,7 @@ public class TGS {
 		private ArrayList<String> key=new ArrayList<String>();	 
 		private ArrayList<String> ws=new ArrayList<String>();
 		private String IDv="";
-		private String Kcv="00000000";	//TODO 从数据库读
+		private String Ktgsv="00000000";	//TODO 从数据库读
 		String willsend;
 		data d=new data();
 		
@@ -44,6 +44,7 @@ public class TGS {
 				String tmp="";
 				int tmp2;
 				int flag=0;
+				System.out.println("Connected");
 				while((tmp2=reader.read())!=-1){
 					str+=(char)tmp2;
 					if(tmp2=='0'){
@@ -51,10 +52,17 @@ public class TGS {
 						if(flag==4) break;
 					}
 					else flag=0;
-				}	//str为从client接收的数据
+				}	
 				str=str.substring(0, str.length()-4);
+				System.out.println("str size:"+str.length());
+				System.out.println("str----:"+str);
 				key.add(Kastgs);
 				s=d.decode(str, key);
+				
+				for(int i=0;i<s.size();++i){
+					System.out.println("c->tgs----i:"+s.get(i));
+				}
+				
 				tmp+=(char)3;
 				ws.add(tmp);
 				ws.add(randomkey());
@@ -67,15 +75,21 @@ public class TGS {
 				ws.add(s.get(1));
 				ws.add(ws.get(3));
 				ws.add(lifetime);
+				
+				for(int i=0;i<ws.size();++i){
+					System.out.println(i+":"+ws.get(i));
+				}
+				
 				key.clear();
-				key.add(Kcv);
+				key.add(Ktgsv);
 				key.add(s.get(2));
+				System.out.println("key----:"+key.get(1));
 				willsend=d.encode(ws, key);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			System.out.println(willsend);
 			writer.println(willsend);
 			writer.flush();
 			
@@ -120,12 +134,6 @@ public class TGS {
 				if(socket!=null)
 				{
 					new SendThread(socket).start();
-				}
-				try {
-					server.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
 		}

@@ -115,9 +115,15 @@ public class CLIENT {
 			key.clear();
 			key.add(res.get(1));
 			willsend=d.encode(a,key);
+
 			reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
 			writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
-			writer.println(tmp);
+			
+			System.out.println("c->tgs----:"+willsend);
+			for(int i=0;i<willsend.length();++i){
+				System.out.print((int)willsend.charAt(i)+"-");
+			}
+			writer.println(willsend);
 			writer.flush();
 			String str2="";
 			int tmp2;
@@ -131,8 +137,12 @@ public class CLIENT {
 				else flag=0;
 			}	
 			str2=str2.substring(0, str2.length()-4);	//从TGS接收的数据
+			System.out.println(str2);
 			res=d.decode(str2,key);
-			
+			System.out.println("key----:"+key.get(0));
+			for(int i=0;i<res.size();++i){
+				System.out.println(i+":"+res.get(i));
+			}
 			//收到信息保存在str2中
 		}
 		
