@@ -78,11 +78,27 @@ public class data {
 				ret.add(tmp1.substring(32));
 			};break;
 			case 2:{
-				ret=new ArrayList<String>(11);
+				ret=new ArrayList<String>();
 				String t="",tmp1="";
 				t+=S.charAt(0);
-				ret.set(0,t);
+				ret.add(t);
+				tmp1=S.substring(1,9);
+				ret.add(tmp1);
+				tmp1=S.substring(9,57);
+				tmp1=des.Dectyptions(tmp1, Key.get(0));
+				ret.add(tmp1.substring(0,8));
+				ret.add(tmp1.substring(8,16));
+				ret.add(tmp1.substring(16,24));
+				ret.add(tmp1.substring(24,32));
+				ret.add(tmp1.substring(32,40));
+				ret.add(tmp1.substring(40,48));
 				
+				tmp1=S.substring(57);
+				tmp1=des.Dectyptions(tmp1,ret.get(2));
+				
+				ret.add(tmp1.substring(0,8));
+				ret.add(tmp1.substring(8,16));
+				ret.add(tmp1.substring(16,24));
 				
 			};break;
 			case 3:{
