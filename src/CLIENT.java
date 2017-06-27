@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -50,20 +51,20 @@ public class CLIENT {
 		String tmp="";
 		socket=new Socket(ipAS,port);
 		data d=new data();
+		ArrayList<String> res=new ArrayList<String>();
 		if(socket!=null)
 		{
 			reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
 			writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
 			tmp+=(char)0;
-			willsend+=tmp;
-			willsend+=IDc;
-			willsend+=IDtgs;
-			willsend+=getTS();
-			willsend+="0000";
+			res.add(tmp);
+			res.add(IDc);
+			res.add(IDtgs);
+			res.add(getTS());
+			willsend=d.encode(res, key);
 			System.out.println(willsend);
 			writer.println(willsend);
 			writer.flush();
-			ArrayList<String> res=new ArrayList<String>();
 			String str1="";
 			String temstr="";
 			int tmp2;
@@ -78,6 +79,7 @@ public class CLIENT {
 			}	//str为从client接收的数据
 			str1=str1.substring(0, str1.length()-4);
 			res=d.decode(str1, key);
+			
 			/***
 				System.out.println("size----:"+str1.length());
 				System.out.println("str1----:"+str1);
@@ -92,6 +94,7 @@ public class CLIENT {
 					System.out.println(i+":"+res.get(i));
 				}
 				***/
+			System.out.println(res.get(5).length());
 		}
 		writer.close();
 		reader.close();
@@ -100,18 +103,37 @@ public class CLIENT {
 		socket=new Socket(ipTGS,port);
 		if(socket!=null)
 		{
-			reader=new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			writer=new PrintWriter(socket.getOutputStream());
-			writer.println(CtoTGS0010());
+			ArrayList<String> a=new ArrayList();
+			tmp="";
+			tmp+=(char)2;
+			a.add(tmp);
+			a.add("IDV12345");
+			a.add(res.get(5));
+			a.add("IDC12345");
+			a.add(getIP());
+			a.add(getTS());
+			key.clear();
+			key.add(res.get(1));
+			willsend=d.encode(a,key);
+			reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
+			writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
+			writer.println(tmp);
 			writer.flush();
 			String str2="";
-			String temstr="";
-			while ((temstr = reader.readLine()) != null) {
-		        str2+=temstr;
-		      }
+			int tmp2;
+			int flag=0;
+			while((tmp2=reader.read())!=-1){
+				str2+=(char)tmp2;
+				if(tmp2=='0'){
+					flag++;
+					if(flag==4) break;
+				}
+				else flag=0;
+			}	
+			str2=str2.substring(0, str2.length()-4);	//从TGS接收的数据
+			res=d.decode(str2,key);
 			
 			//收到信息保存在str2中
-			writer.flush();
 		}
 		
 		writer.close();
@@ -150,13 +172,35 @@ public class CLIENT {
 		return k;
 	}
 	
+	public String getIP(){
+		String s="";
+		String ip="0000";
+		try {
+			InetAddress addr = InetAddress.getLocalHost();
+			s=addr.getHostAddress().toString();//获得本机IP
+			String[] tmp=s.split("\\.");
+			int tmp2;
+			for(int i=0;i<tmp.length;++i){
+				tmp2=Integer.parseInt(tmp[i]);
+				ip+=(char)tmp2;
+			}
+			return ip;
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public static void main(String args[]){
 		CLIENT cl=new CLIENT(1234,"127.0.0.1","127.0.0.1","127.0.0.1");
+		/***
 		try {
 			cl.SendAndReceive();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		***/
 	}
 }
