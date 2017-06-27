@@ -42,6 +42,12 @@ public class data {
 				ret+=des.Encryptions(tmp1, Key.get(1));
 			};break;
 			case 4:{
+				ret+=S.get(0);
+				ret+=S.get(1);
+
+				String tmp1="";
+				for(int i=2;i<=4;i++) tmp1+=S.get(i);
+				ret+=des.Encryptions(tmp1, Key.get(0));
 				
 			};break;
 			case 5:{
@@ -81,7 +87,8 @@ public class data {
 				ret.add(tmp1.substring(8,16));
 				ret.add(tmp1.substring(16,24));
 				ret.add(tmp1.substring(24,32));
-				ret.add(tmp1.substring(32));
+				ret.add(tmp1.substring(32,40));
+				ret.add(tmp1.substring(40));
 			};break;
 			case 2:{
 				ret=new ArrayList<String>();
@@ -120,7 +127,25 @@ public class data {
 				ret.add(tmp1.substring(24));
 			};break;
 			case 4:{ 
+				ret=new ArrayList<String>();
+				String t="",tmp1="";
+				t+=S.charAt(0);
+				ret.add(t);
+				tmp1=S.substring(1,49);
+				tmp1=des.Dectyptions(tmp1, Key.get(0));
+				ret.add(tmp1.substring(0,8));
+				ret.add(tmp1.substring(8,16));
+				ret.add(tmp1.substring(16,24));
+				ret.add(tmp1.substring(24,32));
+				ret.add(tmp1.substring(32,40));
+				ret.add(tmp1.substring(40,48));
 				
+				tmp1=S.substring(49);
+				tmp1=des.Dectyptions(tmp1,ret.get(1));
+				
+				ret.add(tmp1.substring(0,8));
+				ret.add(tmp1.substring(8,16));
+				ret.add(tmp1.substring(16,24));
 			};break;
 			case 5:{
 				
@@ -137,7 +162,7 @@ public class data {
 	public static void main(String[] args){
 		int x=19;
 		String s=Integer.toString(x);
-		s="00000"+s;
+		s="000000"+s;
 		System.out.println(new Integer(s));
     }
 	
