@@ -71,11 +71,12 @@ public class AS {
 				ws.add(s.get(1));
 				ws.add(getip(socket));
 				ws.add(ws.get(2));
+				ws.add(ws.get(3));
 				ws.add(ws.get(4));
 				tmp=d.encode(ws, key);
 				willsend=tmp;
 				
-				/***≤‚ ‘
+
 				for(int i=0;i<ws.size();++i){
 					System.out.println(i+":"+ws.get(i));
 				}
@@ -99,8 +100,7 @@ public class AS {
 					System.out.print((int)willsend.charAt(i)+"-");
 				}
 				System.out.println("");
-				***/
-				willsend+="0000";
+				
 				//System.out.println("size----:"+tmp.length());
 			} catch (IOException e) {
 				e.printStackTrace();

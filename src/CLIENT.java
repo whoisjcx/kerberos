@@ -80,7 +80,7 @@ public class CLIENT {
 			str1=str1.substring(0, str1.length()-4);
 			res=d.decode(str1, key);
 			
-			/***
+
 				System.out.println("size----:"+str1.length());
 				System.out.println("str1----:"+str1);
 				for(int i=0;i<str1.length();++i){
@@ -90,17 +90,17 @@ public class CLIENT {
 				for(int i=0;i<key.size();++i){
 					System.out.println("key----:"+key.get(i));
 				}
-				for(int i=0;i<res.size();++i){
+
+			for(int i=0;i<res.size();++i){
 					System.out.println(i+":"+res.get(i));
 				}
-				***/
-			System.out.println(res.get(5).length());
+			System.out.println("ticket size:"+res.get(5).length());
 		}
 		writer.close();
 		reader.close();
 		socket.close();
 		
-		socket=new Socket(ipTGS,port);
+		socket=new Socket(ipTGS,2345);
 		if(socket!=null)
 		{
 			ArrayList<String> a=new ArrayList();
@@ -140,7 +140,7 @@ public class CLIENT {
 		reader.close();
 		socket.close();
 		
-		socket=new Socket(ipSERVER,port);
+		socket=new Socket(ipSERVER,3456);
 		if(socket!=null)
 		{
 			CtoV cv=new CtoV();
@@ -253,13 +253,11 @@ public class CLIENT {
 	
 	public static void main(String args[]){
 		CLIENT cl=new CLIENT(1234,"127.0.0.1","127.0.0.1","127.0.0.1");
-		/***
 		try {
 			cl.SendAndReceive();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		***/
 	}
 }

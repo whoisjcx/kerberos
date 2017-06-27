@@ -87,8 +87,7 @@ public class data {
 				ret.add(tmp1.substring(8,16));
 				ret.add(tmp1.substring(16,24));
 				ret.add(tmp1.substring(24,32));
-				ret.add(tmp1.substring(32,40));
-				ret.add(tmp1.substring(40));
+				ret.add(tmp1.substring(32));
 			};break;
 			case 2:{
 				ret=new ArrayList<String>();
