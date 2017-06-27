@@ -30,21 +30,7 @@ public class desdes {
 				temstr = t.BinaryToString(temstr);
 				result += temstr;
 			}
-			
-			String ans="";
-			for(int i=0;i<result.length();++i)
-			{
-				char tech=result.charAt(i);
-				if(tech!=0)
-				{
-					ans+=tech;
-				}
-				else
-				{
-					break;
-				}
-			}
-			return ans;
+			return result;
 		}
 	
 	/*
