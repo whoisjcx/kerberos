@@ -33,7 +33,13 @@ public class data {
 				ret+=tmp1;
 			};break;
 			case 3:{
-				
+				ret+=S.get(0);
+				String tmp1="",tmp2="";
+				for(int i=1;i<4;i++)		tmp1+=S.get(i);
+				for(int i=4;i<S.size();i++)	tmp2+=S.get(i);
+				String en=des.Encryptions(tmp2, Key.get(0));
+				tmp1+=en;
+				ret+=des.Encryptions(tmp1, Key.get(1));
 			};break;
 			case 4:{
 				
@@ -48,7 +54,7 @@ public class data {
 				
 			};break;
 		}
-		return ret;
+		return ret+"0000";
 	}
 	
 	ArrayList<String> decode(String S,ArrayList<String> Key){
@@ -102,9 +108,18 @@ public class data {
 				
 			};break;
 			case 3:{
-				
+				ret=new ArrayList<String>();
+				String t="",tmp1="";
+				t+=S.charAt(0);
+				ret.add(t);
+				tmp1=S.substring(1);
+				tmp1=des.Dectyptions(tmp1, Key.get(0));
+				ret.add(tmp1.substring(0,8));
+				ret.add(tmp1.substring(8,16));
+				ret.add(tmp1.substring(16,24));
+				ret.add(tmp1.substring(24));
 			};break;
-			case 4:{
+			case 4:{ 
 				
 			};break;
 			case 5:{
