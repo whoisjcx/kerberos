@@ -5,6 +5,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -37,7 +38,7 @@ public class SERVER {
 		private PrintWriter writer;
 		private String Ktgsv="00000000";	
 		
-		private ArrayList<String> key=new ArrayList<String>();	// 要从数据库读  
+		private ArrayList<String> key=new ArrayList<String>();	 
 		data d=new data();
 		
 		public SendThread(Socket socket){
@@ -71,8 +72,6 @@ public class SERVER {
 				}
 				
 				demo.beginadd(vc.getS().get(2), text3);
-				System.out.println(demo.getuserlist().get(0));
-				
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -83,6 +82,66 @@ public class SERVER {
 			String willsend=d.encode(vc.getnewS(),vc.getnewKey());
 			writer.println(willsend);
 			writer.flush();
+			
+			while("dsf".equals("dsf")){
+				String str="";
+				String tmp="";
+				int tmp2;
+				int flag=0;
+
+				ArrayList<String> temAL = new ArrayList<String>();
+				try {
+					while((tmp2=reader.read())!=-1){
+						if(tmp2=='完') break;
+						str+=(char)tmp2;
+					}
+					
+					temAL=d.decode(str, vc.getnewKey());
+					switch(temAL.get(0).charAt(0)){
+						case ((1)<<4):{
+							vtoc00100000 v = new vtoc00100000(temAL,demo.getfilename(),vc.getnewKey());
+							writer.println(v.getwillsend());
+							writer.flush();
+						
+						};break;
+						case ((5)<<4):{
+							vtoc00110000 v = new vtoc00110000(vc.getnewKey(), temAL);
+							String filename = demo.getPath() + "\\" + v.getfilename();
+							
+							FileInputStream fin=null;
+							fin = new FileInputStream(new File(filename));
+					        byte[] sendByte = null;
+					        sendByte = new byte[1024];
+					        int length = 0;
+					        String sendstr = "";
+					        while((length = fin.read(sendByte, 0, sendByte.length))>0){
+					        	sendstr=new String(sendByte,"ISO8859-1");
+					        	writer.println(v.vtoc(sendstr));
+					        }
+					        
+					        ArrayList<String> ALtem = new ArrayList<String>();
+							char a = 4<<4;
+							String tema = "";
+							tema += a;
+							ALtem.add(tema);
+					        writer.println(d.encode(ALtem, vc.getnewKey()));
+					        writer.flush();
+							
+						};break;
+						case ((3)<<4):{
+							ctov00110000 c = new ctov00110000(temAL, demo.getPath());
+							demo.refresh();
+						};break;
+					}
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+
+			
 			
 			writer.close();
 			try {
@@ -187,6 +246,11 @@ class MyList {
 		this.Path=str;
 	}
 	
+	public String getPath()
+	{
+		return Path;
+	}
+	
     private JFrame frame = new JFrame("Server");
     private Container container = frame.getContentPane();
     private JList list1 = new JList();// 定义列表框
@@ -241,6 +305,10 @@ class MyList {
 	}
 	
 	FileName fn=new FileName();
+	
+	public ArrayList<String> getfilename(){
+		return fn.getfilename(Path);
+	}
 	
 	public void totext2(String path)
 	{
