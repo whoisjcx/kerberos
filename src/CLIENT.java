@@ -326,15 +326,15 @@ public class CLIENT {
 		}
 		****/
 	}
-	static TextArea t4= new TextArea(19,39);
+	static TextArea t4= new TextArea(20,53);
 	static class ClientUI extends JFrame{
 
 		JButton bt1=new JButton("请求认证");	
 		JButton bt2=new JButton("进入服务");
 		
-		JTextField t1=new JTextField(20);
-		JTextField t2=new JTextField(20);
-		JTextField t3=new JTextField(20);
+		JTextField t1=new JTextField(30);
+		JTextField t2=new JTextField(30);
+		JTextField t3=new JTextField(30);
 		JLabel l1=new JLabel("用户名    ");
 		JLabel l2=new JLabel("服务器名");
 		JLabel l3=new JLabel("服务器IP ");
@@ -419,7 +419,7 @@ public class CLIENT {
 		ClientUI(){
 			
 			JFrame jf = new JFrame("Client");
-			jf.setSize(310,490);
+			jf.setSize(410,490);
 			jf.setResizable(false);
 			Container container=jf.getContentPane();
 			//FlowLayout fleft=new FlowLayout(FlowLayout.CENTER,10,10);
@@ -486,9 +486,6 @@ public class CLIENT {
 			CLIENT cl=new CLIENT(1234,ipAS,ipTGS,ipSERVER);
 
 				cl.SendAndReceive();
-
-			
-			
 			
 			//OK=1;
 			if(OK==1) JOptionPane.showMessageDialog(this, "认证成功","服务",JOptionPane.INFORMATION_MESSAGE);
