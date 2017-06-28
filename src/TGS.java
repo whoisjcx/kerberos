@@ -34,6 +34,7 @@ public class TGS {
 	private String IDtgs="IDtgs123";	//tgsµƒID
 	private String lifetime="00005000";
 	private String Kastgs="00000000";
+	private String[] pack2={"IDv:","Kc-tgs:","IDc:","IPc:","IDtgs:","time:","lifetime:","IDc:","Addrc:","time:"};
 	
 	class SendThread extends Thread{
 		private Socket socket=null;  
@@ -91,9 +92,9 @@ public class TGS {
 				else{
 					key.add(Kastgs);
 					s=d.decode(str, key);
-					for(int i=0;i<s.size();++i){
+					for(int i=1;i<s.size();++i){
 						System.out.println("c->tgs----i:"+s.get(i));
-						t2.append(s.get(i));
+						t2.append(pack2[i-1]+"\n\t"+s.get(i));
 						t2.append("\n");
 					}
 					t1.setText(t1.getText()+s.get(8)+"«Î«Û∑√Œ "+s.get(1)+"\n");

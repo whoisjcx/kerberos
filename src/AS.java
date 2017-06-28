@@ -22,6 +22,7 @@ public class AS {
 	private int port=1234;	//监听端口
 	private String IDtgs="IDtgs123";	//tgs的ID
 	private String lifetime="00005000";
+	private String[] pack0={"IDc:","IDtgs","TS"};
 	
 	class SendThread extends Thread{
 		private Socket socket=null;  
@@ -76,9 +77,9 @@ public class AS {
 					t1.setText(t1.getText()+time+"\n");  
 					s=d.decode(str, key);
 					t1.setText(t1.getText()+s.get(1)+"请求认证！\n");
-					for(int i=0;i<s.size();++i){
+					for(int i=1;i<s.size();++i){
 						System.out.println(i+":"+s.get(i));	//名文内容
-						t2.setText(t2.getText()+s.get(i)+"\n");  
+						t2.setText(t2.getText()+pack0[i-1]+"\n\t"+s.get(i)+"\n");  
 					}
 					Kc=sql.select(s.get(1));
 					t2.setText(t2.getText()+"\n");
