@@ -32,6 +32,7 @@ public class AS {
 		private ArrayList<String> ws=new ArrayList<String>();
 		private String Kastgs="00000000";
 		private String Kc="00000000";	//数据库
+		private mysql sql;
 		data d=new data();
 		String willsend="";
 		public SendThread(Socket socket){
@@ -44,6 +45,7 @@ public class AS {
 			System.out.println("connected!");
 			//t1.setText(t1.getText()+"connected!\n\n");
 			try {
+				sql=new mysql();
 				reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
 				writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
 				String str="";
@@ -69,27 +71,36 @@ public class AS {
 					System.out.println(i+":"+s.get(i));	//名文内容
 					t2.setText(t2.getText()+s.get(i)+"\n");  
 				}
+				Kc=sql.select(s.get(1));
 				t2.setText(t2.getText()+"\n");
-				tmp="";
-				tmp+=(char)1;
-				ws.add(tmp);
-				tmp=randomkey();
-				key.add(Kastgs);
-				key.add(Kc);
-				ws.add(tmp);
-				ws.add(IDtgs);
-				ws.add(getTS());
-				ws.add(lifetime);
-				ws.add(ws.get(1));
-				ws.add(s.get(1));
-				ws.add(getip(socket));
-				ws.add(ws.get(2));
-				ws.add(ws.get(3));
-				ws.add(ws.get(4));
-				tmp=d.encode(ws, key);
-				willsend=tmp;
-				
-
+				if(Kc==null){
+					ws.clear();
+					tmp2=1<<7;
+					tmp+=tmp2;
+					ws.add(tmp);
+					t1.append("查无此人，认证失败包");
+					willsend=d.encode(ws, null);
+				}
+				else{
+					tmp="";
+					tmp+=(char)1;
+					ws.add(tmp);
+					tmp=randomkey();
+					key.add(Kastgs);
+					key.add(Kc);
+					ws.add(tmp);
+					ws.add(IDtgs);
+					ws.add(getTS());
+					ws.add(lifetime);
+					ws.add(ws.get(1));
+					ws.add(s.get(1));
+					ws.add(getip(socket));
+					ws.add(ws.get(2));
+					ws.add(ws.get(3));
+					ws.add(ws.get(4));
+					willsend=d.encode(ws, key);
+					t1.append("票据包");
+				}
 				for(int i=0;i<ws.size();++i){
 					System.out.println(i+":"+ws.get(i));
 				}
@@ -115,12 +126,12 @@ public class AS {
 				System.out.println("");
 				
 				//System.out.println("size----:"+tmp.length());
-			} catch (IOException e) {
+			} catch (IOException | ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
 			} 
 			System.out.println("willsend----:"+willsend);
 			writer.println(willsend);
-			t1.setText(t1.getText()+"已发送认证！\n\n");
+			t1.setText(t1.getText()+"已发送！\n\n");
 			writer.flush();
 			writer.close();
 			try {
@@ -236,5 +247,38 @@ public class AS {
 					this.setVisible(true);
 				} 								
 		}	
+	
+	static class mysql{
+		// 数据库名称，管理员账号、密码
+		 //建立本地数据库连接，编码规则转换为utf-8(正常录入中文)
+		String url = "jdbc:mysql://localhost:3306/myas?useUnicode=true&characterEncoding=utf8";
+		String user = "root";
+		String pwd = "123456";
+		Connection con = null;
+		Statement stat=null;
+		PreparedStatement pStmt=null;
+		mysql() throws ClassNotFoundException, SQLException{
+			   Class.forName("com.mysql.jdbc.Driver");
+			   con = DriverManager.getConnection(url, user, pwd);
+			   stat=con.createStatement();
+		}
+		public String select(String name){
+			try {
+				pStmt=con.prepareStatement("select ckey from kasc where clients = '" + name + "'");
+				ResultSet rs=pStmt.executeQuery();
+				if(rs.next()){
+					String res=rs.getString(1);
+					return res;
+				}
+				else{
+					System.out.println("no such client");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+	}
 }
 
