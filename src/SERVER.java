@@ -60,6 +60,7 @@ public class SERVER {
 					str+=(char)tmp2;
 				}
 				key.add(Ktgsv);
+				vc.setS(d.decode(str, key));
 				
 				String text3="";
 				for(int i=0;i<vc.getnewS().size();++i)
@@ -70,7 +71,7 @@ public class SERVER {
 				
 				demo.beginadd(vc.getnewS().get(2), text3);
 				
-				vc.setS(d.decode(str, key));
+				
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
