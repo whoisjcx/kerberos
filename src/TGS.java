@@ -8,6 +8,12 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -192,5 +198,38 @@ public class TGS {
 		this.setVisible(true);
 	}
 	}
+	
+	class mysql{
+		// 数据库名称，管理员账号、密码
+		 //建立本地数据库连接，编码规则转换为utf-8(正常录入中文)
+		String url = "jdbc:mysql://localhost:3306/mytgs?useUnicode=true&characterEncoding=utf8";
+		String user = "root";
+		String pwd = "123456";
+		Connection con = null;
+		Statement stat=null;
+		PreparedStatement pStmt=null;
+		mysql() throws ClassNotFoundException, SQLException{
+			   Class.forName("com.mysql.jdbc.Driver");
+			   con = DriverManager.getConnection(url, user, pwd);
+			   stat=con.createStatement();
+		}
+		public String select(String name){
+			try {
+				pStmt=con.prepareStatement("select vkey from information where servers = '" + name + "'");
+				ResultSet rs=pStmt.executeQuery();
+				if(rs.next()){
+					String res=rs.getString(1);
+					return res;
+				}
+				else{
+					System.out.println("no such server");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+}
 }
 
