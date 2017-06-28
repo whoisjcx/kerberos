@@ -259,7 +259,7 @@ public class CLIENT {
 				System.out.println("ADD   "+s);
 			}
 				
-			
+			/***
 			while("dfs".equals("dfs")){
 				if(upfile==1){
 					
@@ -276,7 +276,7 @@ public class CLIENT {
 				}
 				
 			}
-			
+			****/
 			
 		}
 		

@@ -61,6 +61,9 @@ public class SERVER {
 					if(tmp2=='Íê') break;
 					str+=(char)tmp2;
 				}
+				while(reader.ready()){
+					tmp2=reader.read();
+				}
 				key.add(Ktgsv);
 				vc.setS(d.decode(str, key));
 				
@@ -95,7 +98,7 @@ public class SERVER {
 						if(tmp2=='Íê') break;
 						str+=(char)tmp2;
 					}
-					//System.out.println((int)str.charAt(0)+"  ****STR***  "+str.length());
+
 					temAL=d.decode(str, vc.getnewKey());
 					System.out.println(temAL);
 					switch(temAL.get(0).charAt(0)){
