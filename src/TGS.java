@@ -83,7 +83,7 @@ public class TGS {
 				if(tmp2!=2){
 					ws.clear();
 					tmp2=1<<7;
-					tmp+=tmp2;
+					tmp+=(char)tmp2;
 					ws.add(tmp);
 					willsend=d.encode(ws, null);
 					t1.append("未知数据包，错误");
@@ -103,7 +103,7 @@ public class TGS {
 					if(time2-time1>5000){
 						ws.clear();
 						tmp2=1<<7;
-						tmp+=tmp2;
+						tmp+=(char)tmp2;
 						ws.add(tmp);
 						willsend=d.encode(ws, null);
 						t1.append("验证超时，错误");
@@ -143,7 +143,6 @@ public class TGS {
 							System.out.println(i+":"+ws.get(i));
 						}
 						
-						System.out.println("key----:"+key.get(1));
 					}
 					
 				}

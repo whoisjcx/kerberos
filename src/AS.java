@@ -63,9 +63,10 @@ public class AS {
 				if(tmp2!=0){
 					ws.clear();
 					tmp2=1<<7;
-					tmp+=tmp2;
+					tmp+=(char)tmp2;
 					ws.add(tmp);
 					willsend=d.encode(ws, null);
+					
 					t1.append("未知数据包，错误");
 				}
 				else{
@@ -84,10 +85,13 @@ public class AS {
 					if(Kc==null){
 						ws.clear();
 						tmp2=1<<7;
-						tmp+=tmp2;
+						tmp+=(char)tmp2;
 						ws.add(tmp);
 						t1.append("查无此人，认证失败包");
 						willsend=d.encode(ws, null);
+						for(int i=0;i<willsend.length();++i){
+							System.out.print((int)willsend.charAt(i)+"-");
+						}
 					}
 					else{
 						tmp="";
