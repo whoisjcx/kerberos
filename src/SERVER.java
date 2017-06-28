@@ -82,7 +82,6 @@ public class SERVER {
 			String willsend=d.encode(vc.getnewS(),vc.getnewKey());
 			writer.println(willsend);
 			writer.flush();
-			
 			while("dsf".equals("dsf")){
 				String str="";
 				String tmp="";
@@ -91,16 +90,18 @@ public class SERVER {
 
 				ArrayList<String> temAL = new ArrayList<String>();
 				try {
-					while((tmp2=reader.read())!=-1){
+					str="";
+					while((tmp2=reader.read())!=-100){
 						if(tmp2=='Íê') break;
 						str+=(char)tmp2;
 					}
-					System.out.println((int)str.charAt(1)+"  ****STR***  "+str.length());
+					//System.out.println((int)str.charAt(0)+"  ****STR***  "+str.length());
 					temAL=d.decode(str, vc.getnewKey());
 					System.out.println(temAL);
 					switch(temAL.get(0).charAt(0)){
 						case ((1)<<4):{
 							vtoc00100000 v = new vtoc00100000(temAL,demo.getfilename(),vc.getnewKey());
+							//System.out.println("BUGGGGGGGGG");
 							writer.println(v.getwillsend());
 							writer.flush();
 						

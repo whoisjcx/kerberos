@@ -81,7 +81,7 @@ public class CLIENT {
 			res.add(getTS());
 			willsend=d.encode(res, key);
 			System.out.println(willsend);
-			writer.println(willsend);
+			writer.print(willsend);
 			writer.flush();
 			String str1="";
 			String temstr="";
@@ -153,7 +153,7 @@ public class CLIENT {
 			for(int i=0;i<willsend.length();++i){
 				System.out.print((int)willsend.charAt(i)+"-");
 			}
-			writer.println(willsend);
+			writer.print(willsend);
 			writer.flush();
 			String str2="";
 			int tmp2;
@@ -202,7 +202,8 @@ public class CLIENT {
 			
 			reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
 			writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
-			writer.println(d.encode(cv.getnewS(), cv.getnewKey()));
+			writer.print(d.encode(cv.getnewS(), cv.getnewKey()));
+			System.out.println("BBBBBBBBBBBBBBBBBBBBBBBB"+d.encode(cv.getnewS(), cv.getnewKey()).length());
 			writer.flush();
 			String str="";
 			//String tmp="";
@@ -225,8 +226,7 @@ public class CLIENT {
 			for(int i=1;i<al.size();++i)
 			{
 				System.out.println(al.get(i));
-				t4.append(pack5[i-1]+"\n\t"+al.get(i));
-				t4.append("\n");
+				t4.append(pack5[i-1]+"\n\t"+al.get(i)); 
 				
 			}
 			t4.append("\n");
@@ -242,19 +242,23 @@ public class CLIENT {
 			Zkey.add(Kcv);
 			Zsen.add(tmp);
 			System.out.println("tmp!!!  "+d.encode(Zsen, Zkey));
-			writer.println(d.encode(Zsen, Zkey));
+			writer.print(d.encode(Zsen, Zkey));
+			//writer.print(s);
 			writer.flush();
 			str="";
 			//String tmp="";
 			flag=0;
-			while((tmp2=reader.read())!=-1){
+			while((tmp2=reader.read())>=0){
 				if(tmp2=='Íê') break;
 				str+=(char)tmp2;
 			}
 			System.out.println(str);
 			al= d.decode(str, Zkey);
-			for(String s:al)
+			for(String s:al){
 				filelist.addElement(s);
+				System.out.println("ADD   "+s);
+			}
+				
 			
 			while("dfs".equals("dfs")){
 				if(upfile==1){
@@ -272,6 +276,7 @@ public class CLIENT {
 				}
 				
 			}
+			
 			
 		}
 		
@@ -477,6 +482,9 @@ public class CLIENT {
 			BorderLayout border=new BorderLayout(10,10);
 			container.setLayout(border);
 			//p1.setLayout(fleft);
+			t1.setText("idc12345");
+			t2.setText("idv12345");
+			t3.setText("127.0.0.1");
 			p3.add(l1);
 			p3.add(t1);
 			

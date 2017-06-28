@@ -159,7 +159,7 @@ public class TGS {
 				e.printStackTrace();
 			}
 			System.out.println(willsend);
-			writer.println(willsend);
+			writer.print(willsend);
 			t1.setText(t1.getText()+"ÒÑ·¢ËÍ£¡\n\n");
 			writer.flush();
 			
@@ -313,6 +313,7 @@ public class TGS {
 			}
 			return null;
 		}
+		
 }
 }
 
