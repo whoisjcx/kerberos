@@ -267,7 +267,7 @@ public class AS {
 		 //建立本地数据库连接，编码规则转换为utf-8(正常录入中文)
 		String url = "jdbc:mysql://localhost:3306/myas?useUnicode=true&characterEncoding=utf8";
 		String user = "root";
-		String pwd = "root";
+		String pwd = "123456";
 		Connection con = null;
 		Statement stat=null;
 		PreparedStatement pStmt=null;

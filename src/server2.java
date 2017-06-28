@@ -35,7 +35,7 @@ class vtoc00100000{
 		tema+=a;
 		newS.add(tema);
 		newS.addAll(filename);
-		newS = totalfile; 
+		//newS = totalfile; 
 		data d = new data();
 		willsend = d.encode(newS, Key);
 	}

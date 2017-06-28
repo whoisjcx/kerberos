@@ -61,6 +61,9 @@ public class SERVER {
 					if(tmp2=='Íê') break;
 					str+=(char)tmp2;
 				}
+				while(reader.ready()){
+					tmp2=reader.read();
+				}
 				key.add(Ktgsv);
 				vc.setS(d.decode(str, key));
 				
@@ -95,7 +98,7 @@ public class SERVER {
 						if(tmp2=='Íê') break;
 						str+=(char)tmp2;
 					}
-					System.out.println((int)str.charAt(1)+"  ****STR***  "+str.length());
+					//System.out.println((int)str.charAt(1)+"  ****STR***  "+str.length());
 					temAL=d.decode(str, vc.getnewKey());
 					System.out.println(temAL);
 					switch(temAL.get(0).charAt(0)){
@@ -185,7 +188,7 @@ public class SERVER {
 	
 	public void Serverstart()
 	{
-        demo.setPath("C:\\Users\\Administrator.USER-20151226PH\\Desktop\\test");
+        demo.setPath("C:\\Users\\75608_000\\Desktop\\test");
         demo.refresh();
 		new ListenThread().start();
 	}

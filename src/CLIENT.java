@@ -170,12 +170,12 @@ public class CLIENT {
 			else OK=1;
 			t4.append("收到"+tmp2+"号数据包,明文如下\n");
 			res=d.decode(str2, key);
-			Kcv=res.get(1);
 			if(res==null){
 				OK=0;
 				socket.close();
 				return;
 			}
+			Kcv=res.get(1);
 			System.out.println(str2);
 			res=d.decode(str2,key);
 			System.out.println("key----:"+key.get(0));
@@ -253,6 +253,10 @@ public class CLIENT {
 			}
 			System.out.println(str);
 			al= d.decode(str, Zkey);
+			for(String s:al){
+				System.out.println("al----:"+al);
+			}
+			
 			for(String s:al)
 				filelist.addElement(s);
 			
