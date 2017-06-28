@@ -123,8 +123,8 @@ public class SERVER {
 	
 	public void Serverstart()
 	{
-        demo.setPath("C:\\Users\\chenlvhao\\Desktop\\send");
-        demo.refresh();
+        //demo.setPath("C:\\Users\\chenlvhao\\Desktop\\send");
+        //demo.refresh();
 		new ListenThread().start();
 	}
 	
@@ -245,12 +245,8 @@ class MyList {
  
     public MyList() {
     	
-    	ArrayList<String> tem = new ArrayList<String>();
-        this.frame.setLayout(new GridLayout(1, 2));
-        Vector<String> user = new Vector<String>(tem);
-
-        this.list1 = new JList(user);
-        
+        this.frame.setLayout(new GridLayout(1, 2));   
+        this.list1 = new JList(userlist);
         list1.addListSelectionListener(new ListSelectionListener(){
         	public void valueChanged(ListSelectionEvent e){
         		do_user_valueChanged(e);
