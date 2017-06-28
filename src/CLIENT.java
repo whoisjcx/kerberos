@@ -6,6 +6,8 @@ import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -44,6 +46,9 @@ public class CLIENT {
 	static String IDc="IDc12345";
 	static String IDtgs="IDtgs123";
 	static String IDv="IDv12345";
+	static String upname="";
+	static String downname="";
+	static String downfile="";
 	static String Kcv="00000000";
 	static JFrame jf = new JFrame("Client");
 	ArrayList<String> key=new ArrayList<String>();
@@ -63,7 +68,24 @@ public class CLIENT {
 	void Cstar(){
 		new SendAndReceive ().start();
 	}
-
+	public static synchronized int UP() {
+	    return upfile;
+	 }
+	public static synchronized int DO() {
+	    return download;
+	}
+	public static synchronized int UP1() {
+	    return upfile=1;
+	 }
+	public static synchronized int DO1() {
+	    return download=1;
+	}
+	public static synchronized int UP0() {
+	    return upfile=0;
+	 }
+	public static synchronized int DO0() {
+	    return download=0;
+	}
 	class SendAndReceive extends Thread{
 		
 		public void run(){
@@ -273,18 +295,22 @@ public class CLIENT {
 						System.out.println("ADD   "+s+"  size"+s.length());
 					}
 				
-					while("dfs".equals("dfs")){
-						if(upfile==1){
+					while("dsf".equals("dsf")){
 
+						if(UP()!=0){
+							System.out.println(upfile);
+							System.out.println("FXX");
+							String[] TMP=upname.split("\\\\");
+							String NAME=TMP[TMP.length-1];
+							System.out.println("NAME   "+NAME);
 							
-							upfile=0;
+							UP0();
 						}
-						if(download==1){
+						if(DO()!=0){
 							
 							
 							
-							
-							download=0;
+							DO0();
 						}
 						
 					}
@@ -445,6 +471,22 @@ public class CLIENT {
 			        		do_user_valueChanged(e);
 			        	}
 			        });
+					b1.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							upname=t1.getText();
+							System.out.println("??????????????????????????");
+							//upfile=1;
+							UP1();
+							System.out.println(upfile);
+						}
+					});
+					b2.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){	
+							downname=t2.getText();
+							//download=1;
+							DO1();
+						}
+					});
 					list1.setBorder(BorderFactory.createTitledBorder("文件列表"));
 			        list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			        p1.add(no2);
@@ -478,6 +520,7 @@ public class CLIENT {
 				} 	
 				protected void do_user_valueChanged(ListSelectionEvent e){
 			    	System.out.println(list1.getSelectedIndex());
+			    	System.out.println(list1.getSelectedValue());
 			    	//text3.setText(list1.getSelectedValue().toString());
 			    }
 			}	
@@ -540,8 +583,8 @@ public class CLIENT {
 		void method1()
 		{
 			//IP=t1.getText();
-			ipAS="127.0.0.1";
-			ipTGS="127.0.0.1";
+			//ipAS="127.0.0.1";
+			//ipTGS="127.0.0.1";
 			ipSERVER=t3.getText();
 			IDc=t1.getText();
 			IDtgs="IDtgs123";

@@ -1,8 +1,8 @@
 import java.util.*; 
 public class hello {
 	public static void main(String args[]){
-		String S="бя123бя2345бя56бя";
-		String[] A=S.split("бя");
+		String S="123\\2345\\56";
+		String[] A=S.split("\\\\");
 		for(String s:A){
 			System.out.println(s);
 		}
