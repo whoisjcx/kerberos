@@ -40,6 +40,7 @@ public class TGS {
 		private String Ktgsv="00000000";	//TODO 从数据库读
 		String willsend;
 		data d=new data();
+		mysql sql=null;
 		
 		public SendThread(Socket socket){
 			this.socket=socket;
@@ -49,8 +50,10 @@ public class TGS {
 		public void run(){
 			//String ip=socket.getInetAddress().getHostAddress();
 			System.out.println("Connected");
+			
 			t1.setText(t1.getText()+"connected!\n\n");
 			try {
+				sql=new mysql();
 				reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
 				writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
 				String str="";
@@ -71,30 +74,43 @@ public class TGS {
 				for(int i=0;i<s.size();++i){
 					System.out.println("c->tgs----i:"+s.get(i));
 				}
-				
-				tmp+=(char)3;
-				ws.add(tmp);
-				ws.add(randomkey());
-				IDv=s.get(1);
-				ws.add(IDv);
-				ws.add(getTS());
-				ws.add(ws.get(1));
-				ws.add(s.get(8));
-				ws.add(s.get(9));
-				ws.add(s.get(1));
-				ws.add(ws.get(3));
-				ws.add(lifetime);
-				
+				IDv=sql.select(s.get(1));
+				if(IDv==null){
+					ws.clear();
+					tmp2=1<<7;
+					tmp+=(char)tmp2;
+					ws.add(tmp);
+					willsend=d.encode(ws, null);
+				}
+				else{
+					tmp+=(char)3;
+					ws.add(tmp);
+					ws.add(randomkey());
+					IDv=s.get(1);
+					ws.add(IDv);
+					ws.add(getTS());
+					ws.add(ws.get(1));
+					ws.add(s.get(8));
+					ws.add(s.get(9));
+					ws.add(s.get(1));
+					ws.add(ws.get(3));
+					ws.add(lifetime);
+				}
 				for(int i=0;i<ws.size();++i){
 					System.out.println(i+":"+ws.get(i));
 				}
-				
 				key.clear();
 				key.add(Ktgsv);
 				key.add(s.get(2));
 				System.out.println("key----:"+key.get(1));
 				willsend=d.encode(ws, key);
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -171,9 +187,19 @@ public class TGS {
 	}
 	
 	public static void main(String args[]){
+		/***
 		TGS tgs=new TGS();
 		tgs.TGSstart();
 		MyFramePanel2 frame = new MyFramePanel2();
+		***/
+		try {
+			mysql sql=new mysql();
+			System.out.println(sql.select("IDV12345"));
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	static TextArea t1= new TextArea(23,78);
@@ -199,7 +225,7 @@ public class TGS {
 	}
 	}
 	
-	class mysql{
+	static class mysql{
 		// 数据库名称，管理员账号、密码
 		 //建立本地数据库连接，编码规则转换为utf-8(正常录入中文)
 		String url = "jdbc:mysql://localhost:3306/mytgs?useUnicode=true&characterEncoding=utf8";
@@ -215,7 +241,7 @@ public class TGS {
 		}
 		public String select(String name){
 			try {
-				pStmt=con.prepareStatement("select vkey from information where servers = '" + name + "'");
+				pStmt=con.prepareStatement("select vkey from ktgsv where servers = '" + name + "'");
 				ResultSet rs=pStmt.executeQuery();
 				if(rs.next()){
 					String res=rs.getString(1);
