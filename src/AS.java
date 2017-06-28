@@ -8,6 +8,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
+import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -39,7 +42,7 @@ public class AS {
 		public void run(){
 			//String ip=socket.getInetAddress().getHostAddress();
 			System.out.println("connected!");
-			t1.setText(t1.getText()+"connected!\n\n");
+			//t1.setText(t1.getText()+"connected!\n\n");
 			try {
 				reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
 				writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
@@ -53,11 +56,20 @@ public class AS {
 				}	//str为从client接收的数据
 				//str=str.substring(0, str.length()-4);
 				System.out.println(str);//密文内容
-				t1.setText(t1.getText()+"收到请求！\n\n");
+				tmp2=str.charAt(0);
+				t2.setText(t2.getText()+"收到"+tmp2+"号数据包,明文：\n");  
+				Date date=new Date(System.currentTimeMillis()); 
+				  DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+				  String time=format.format(date); 
+				t1.setText(t1.getText()+time+"\n");  
+								
 				s=d.decode(str, key);
+				t1.setText(t1.getText()+s.get(1)+"请求认证！\n");
 				for(int i=0;i<s.size();++i){
 					System.out.println(i+":"+s.get(i));	//名文内容
+					t2.setText(t2.getText()+s.get(i)+"\n");  
 				}
+				t2.setText(t2.getText()+"\n");
 				tmp="";
 				tmp+=(char)1;
 				ws.add(tmp);
@@ -190,31 +202,39 @@ public class AS {
 		MyFramePanel frame = new MyFramePanel();
 		//t1.setText(t1.getText()+"\nsdfg\n\n");
 	}
-	static TextArea t1= new TextArea(23,78);
-
-	static class MyFramePanel extends JFrame{
-		
-		
-		//TextArea t1= new TextArea(23,78); //构造一个文本域
-			
-		JPanel p1 = new JPanel();
-		 
-		
-	MyFramePanel(){
-		this.setSize(600,400);
-		setResizable(false);
-		Container container = this.getContentPane();
-		container.setLayout(new FlowLayout());
-				
-		p1.add(t1);
-		t1.setText("Listening......\n\n");	
-		container.add(p1);
-		
-		this.setTitle("AS服务器");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
-	}
-	}
 	
+	static TextArea t1= new TextArea(19,39);
+	static TextArea t2= new TextArea(19,39);
+
+	static class MyFramePanel extends JFrame{								
+				JPanel p1 = new JPanel();
+				JPanel p2 = new JPanel();		
+				JLabel l1 = new JLabel("事件");
+				JLabel l2 = new JLabel("包from->to");
+				JButton b1 = new JButton("清屏");
+				JButton b2 = new JButton("清屏");
+				MyFramePanel(){
+					this.setSize(600,400);
+					setResizable(false);  					
+					Container container = this.getContentPane();
+					GridLayout g = new GridLayout(1,2,10,10);
+					container.setLayout(g);
+										
+					p1.add(l1);
+					p2.add(l2);
+					p1.add(t1);
+					p2.add(t2);
+					p1.add(b1);
+					p2.add(b2);
+				
+					t1.setText("Listening......\n\n");	
+					container.add(p1);
+					container.add(p2);
+					
+					this.setTitle("AS服务器");
+					this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					this.setVisible(true);
+				} 								
+		}	
 }
 
