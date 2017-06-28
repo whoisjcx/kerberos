@@ -28,6 +28,7 @@ public class CLIENT {
 	String ipSERVER;
 	String IDc="IDc12345";
 	String IDtgs="IDtgs123";
+	String IDv="IDv12345";
 	ArrayList<String> key=new ArrayList<String>();
 	
 	public CLIENT(int port,String ipAS,String ipTGS,String ipSERVER){
@@ -99,9 +100,9 @@ public class CLIENT {
 			tmp="";
 			tmp+=(char)2;
 			a.add(tmp);
-			a.add("IDV12345");
+			a.add(IDv);
 			a.add(res.get(5));
-			a.add("IDC12345");
+			a.add(IDc);
 			a.add(getIP());
 			a.add(getTS());
 			key.clear();

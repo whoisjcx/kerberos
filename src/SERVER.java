@@ -15,7 +15,7 @@ public class SERVER {
 		private Socket socket=null;  
 		private BufferedReader reader;
 		private PrintWriter writer;
-		private String Ktgsv="00000000";	//TODO 数据库
+		private String Ktgsv="00000000";	
 		
 		private ArrayList<String> key=new ArrayList<String>();	// 要从数据库读  
 		data d=new data();
