@@ -383,7 +383,13 @@ public class CLIENT {
 			} 
 
 			JOptionPane.showMessageDialog(this, "认证成功","服务",JOptionPane.INFORMATION_MESSAGE);
-
+			CLIENT cl=new CLIENT(1234,ipAS,ipTGS,ipSERVER);
+			try {
+				cl.SendAndReceive();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return;
 			
 		}	
