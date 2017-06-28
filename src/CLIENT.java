@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,16 +34,21 @@ public class CLIENT {
 	static int port=1234;
 	static int OK=0;
 	static String ipAS="127.0.0.1";
+	static int upfile=0;
+	static int download=0;
 	static String ipTGS="127.0.0.1";
 	static String ipSERVER="127.0.0.1";
 	static String IDc="IDc12345";
 	static String IDtgs="IDtgs123";
 	static String IDv="IDv12345";
+	static String Kcv="00000000";
 	ArrayList<String> key=new ArrayList<String>();
 	String[] pack1={"Kc-tgs:","IDtgs:","Time:","Lifetime:","Ticket:"};
 	String[] pack3={"Kc-v:","IDv:","Time:","Ticket:"};
 	String[] pack5={"Time:"};
-	
+	//JList list1 = new JList();// 定义列表框
+	//Vector<String> filelist = new Vector<String>();
+	static DefaultListModel filelist=new DefaultListModel();
 	public CLIENT(int cport,String cipAS,String cipTGS,String cipSERVER){
 		port=cport;
 		ipAS=cipAS;
@@ -164,6 +170,7 @@ public class CLIENT {
 			else OK=1;
 			t4.append("收到"+tmp2+"号数据包,明文如下\n");
 			res=d.decode(str2, key);
+			Kcv=res.get(1);
 			if(res==null){
 				OK=0;
 				socket.close();
@@ -225,7 +232,47 @@ public class CLIENT {
 			t4.append("\n");
 			
 			//收到信息保存在str2中
+			//writer.flush();
+			
+			tmp="";
+			tmp+=(char)((1)<<4);
+			System.out.println("tmp!!!  "+(int)tmp.charAt(0));
+			ArrayList<String> Zsen=new ArrayList<String>();
+			ArrayList<String> Zkey=new ArrayList<String>();
+			Zkey.add(Kcv);
+			Zsen.add(tmp);
+			System.out.println("tmp!!!  "+d.encode(Zsen, Zkey));
+			writer.println(d.encode(Zsen, Zkey));
 			writer.flush();
+			str="";
+			//String tmp="";
+			flag=0;
+			while((tmp2=reader.read())!=-1){
+				if(tmp2=='完') break;
+				str+=(char)tmp2;
+			}
+			System.out.println(str);
+			al= d.decode(str, Zkey);
+			for(String s:al)
+				filelist.addElement(s);
+			
+			while("dfs".equals("dfs")){
+				if(upfile==1){
+					
+					
+					
+					upfile=0;
+				}
+				if(download==1){
+					
+					
+					
+					
+					download=0;
+				}
+				
+			}
+			
 		}
 		
 		
@@ -345,14 +392,15 @@ public class CLIENT {
 
 
 		class MyFramePanel extends JFrame{
-				JList list1 = null;// 定义列表框
-				Vector<String> filelist = new Vector<String>();
+				
 				//TextArea tt1= new TextArea(19,39);
 				TextArea tt2= new TextArea(19,39);
 				JPanel p1 = new JPanel();
 				JPanel p2 = new JPanel();		
 				JLabel l1 = new JLabel("上传文件路径");
-				
+				JList list1 = new JList();// 定义列表框
+				//Vector<String> filelist = new Vector<String>();
+				//DefaultListModel filelist=new DefaultListModel();
 				JLabel no1 = new JLabel("                                                                           ");
 				JLabel no2 = new JLabel("                                                                           ");
 				JLabel no3 = new JLabel("                                                                           ");
@@ -362,8 +410,8 @@ public class CLIENT {
 				JLabel no7 = new JLabel("                                                                           ");
 				JLabel no8 = new JLabel("                                                                           ");
 				JLabel l3 = new JLabel("   下载保存文件路径      ");
-				JTextField t1=new JTextField(20);
-				JTextField t2=new JTextField(20);
+				JTextField t1=new JTextField(17);
+				JTextField t2=new JTextField(17);
 				JLabel l2 = new JLabel("数据包情况");
 				JButton b1 = new JButton("上传");
 				JButton b2 = new JButton("下载");
@@ -373,7 +421,8 @@ public class CLIENT {
 					Container container = this.getContentPane();
 					GridLayout g = new GridLayout(1,2,10,10);
 					container.setLayout(g);
-					this.list1 = new JList(filelist);
+					//this.list1 = new JList(filelist);
+					this.list1.setModel(filelist);
 					list1.addListSelectionListener(new ListSelectionListener(){
 			        	public void valueChanged(ListSelectionEvent e){
 			        		do_user_valueChanged(e);

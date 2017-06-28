@@ -96,7 +96,7 @@ class ctov00110000{
 		Path = path + S.get(1);
 		
 		FileOutputStream fout = null;
-        fout = new FileOutputStream(new File("C:\\Users\\chenlvhao\\Desktop\\receive\\"+"namei.zip"),true);
+        fout = new FileOutputStream(new File(Path),true);
         
         byte[] sendByte = null;
         sendByte = new byte[1024];

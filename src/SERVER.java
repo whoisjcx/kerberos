@@ -95,8 +95,9 @@ public class SERVER {
 						if(tmp2=='Íê') break;
 						str+=(char)tmp2;
 					}
-					
+					System.out.println((int)str.charAt(1)+"  ****STR***  "+str.length());
 					temAL=d.decode(str, vc.getnewKey());
+					System.out.println(temAL);
 					switch(temAL.get(0).charAt(0)){
 						case ((1)<<4):{
 							vtoc00100000 v = new vtoc00100000(temAL,demo.getfilename(),vc.getnewKey());
@@ -184,8 +185,8 @@ public class SERVER {
 	
 	public void Serverstart()
 	{
-        //demo.setPath("C:\\Users\\chenlvhao\\Desktop\\send");
-        //demo.refresh();
+        demo.setPath("C:\\Users\\Administrator.USER-20151226PH\\Desktop\\test");
+        demo.refresh();
 		new ListenThread().start();
 	}
 	
