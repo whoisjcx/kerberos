@@ -262,7 +262,8 @@ class MyList {
     public MyList() {
     	
         this.frame.setLayout(new GridLayout(1, 2));   
-        this.list1 = new JList(userlist);
+        this.list1.setModel(userlist);
+        //this.list1 = new JList(userlist);
         list1.addListSelectionListener(new ListSelectionListener(){
         	public void valueChanged(ListSelectionEvent e){
         		do_user_valueChanged(e);
