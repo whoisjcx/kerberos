@@ -39,6 +39,9 @@ public class CLIENT {
 	static String IDtgs="IDtgs123";
 	static String IDv="IDv12345";
 	ArrayList<String> key=new ArrayList<String>();
+	String[] pack1={"Kc-tgs:","IDtgs:","Time:","Lifetime:","Ticket:"};
+	String[] pack3={"Kc-v:","IDv:","Time:","Ticket:"};
+	String[] pack5={"Time:"};
 	
 	public CLIENT(int cport,String cipAS,String cipTGS,String cipSERVER){
 		port=cport;
@@ -49,14 +52,16 @@ public class CLIENT {
 	}
 	
 	
-	void SendAndReceive() throws UnknownHostException, IOException
+	void SendAndReceive()
 	{
+		try {
 		Socket socket=null;
 		BufferedReader reader = null;
 		PrintWriter writer = null;
 		String willsend="";
 		String tmp="";
 		socket=new Socket(ipAS,port);
+		
 		data d=new data();
 		ArrayList<String> res=new ArrayList<String>();
 		if(socket!=null)
@@ -79,10 +84,23 @@ public class CLIENT {
 			while((tmp2=reader.read())!=-1){
 				if(tmp2=='完') break;
 				str1+=(char)tmp2;
-			}	//str为从client接收的数据
+			}	
+			tmp2=str1.charAt(0);
+			if(tmp2!=1){
+				OK=0;
+				socket.close();
+				return;
+			}
+			else OK=1;
+			t4.append("收到"+tmp2+"号数据包,明文如下\n");
 			res=d.decode(str1, key);
-			
-
+			if(res==null){
+				OK=0;
+				socket.close();
+				return;
+			}
+			else{
+				
 				System.out.println("size----:"+str1.length());
 				System.out.println("str1----:"+str1);
 				for(int i=0;i<str1.length();++i){
@@ -93,10 +111,14 @@ public class CLIENT {
 					System.out.println("key----:"+key.get(i));
 				}
 
-			for(int i=0;i<res.size();++i){
+				for(int i=1;i<res.size();++i){
 					System.out.println(i+":"+res.get(i));
+					t4.append(pack1[i-1]+"\n\t"+res.get(i));
+					t4.append("\n");
 				}
-			System.out.println("ticket size:"+res.get(5).length());
+				t4.append("\n");
+				System.out.println("ticket size:"+res.get(5).length());
+			}
 		}
 		writer.close();
 		reader.close();
@@ -105,7 +127,7 @@ public class CLIENT {
 		socket=new Socket(ipTGS,2345);
 		if(socket!=null)
 		{
-			ArrayList<String> a=new ArrayList();
+			ArrayList<String> a=new ArrayList<String>();
 			tmp="";
 			tmp+=(char)2;
 			a.add(tmp);
@@ -129,17 +151,33 @@ public class CLIENT {
 			writer.flush();
 			String str2="";
 			int tmp2;
-			int flag=0;
 			while((tmp2=reader.read())!=-1){
 				if(tmp2=='完') break;
 				str2+=(char)tmp2;
 			}	
+			tmp2=str2.charAt(0);
+			if(tmp2!=3){
+				OK=0;
+				socket.close();
+				return;
+			}
+			else OK=1;
+			t4.append("收到"+tmp2+"号数据包,明文如下\n");
+			res=d.decode(str2, key);
+			if(res==null){
+				OK=0;
+				socket.close();
+				return;
+			}
 			System.out.println(str2);
 			res=d.decode(str2,key);
 			System.out.println("key----:"+key.get(0));
-			for(int i=0;i<res.size();++i){
+			for(int i=1;i<res.size();++i){
 				System.out.println(i+":"+res.get(i));
+				t4.append(pack3[i-1]+"\n\t"+res.get(i));
+				t4.append("\n");
 			}
+			t4.append("\n");
 			//收到信息保存在str2中
 		}
 		
@@ -168,11 +206,23 @@ public class CLIENT {
 				str+=(char)tmp2;
 			}
 			System.out.println(str);
+			tmp2=str.charAt(0);
+			if(tmp2!=5){
+				OK=0;
+				socket.close();
+				return;
+			}
+			else OK=1;
+			t4.append("收到"+tmp2+"号数据包,明文如下\n");
 			ArrayList<String> al= d.decode(str, cv.getnewKey());
-			for(int i=0;i<al.size();++i)
+			for(int i=1;i<al.size();++i)
 			{
 				System.out.println(al.get(i));
+				t4.append(pack5[i-1]+"\n\t"+al.get(i));
+				t4.append("\n");
+				
 			}
+			t4.append("\n");
 			
 			//收到信息保存在str2中
 			writer.flush();
@@ -183,6 +233,11 @@ public class CLIENT {
 		writer.close();
 		reader.close();
 		socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			OK=0;
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -271,7 +326,7 @@ public class CLIENT {
 		}
 		****/
 	}
-	
+	static TextArea t4= new TextArea(19,39);
 	static class ClientUI extends JFrame{
 
 		JButton bt1=new JButton("请求认证");	
@@ -287,8 +342,7 @@ public class CLIENT {
 		JPanel p2=new JPanel();
 		JPanel p3=new JPanel();
 		//JPanel p4=new JPanel();
-		TextArea t4= new TextArea(19,39);
-		;
+
 
 		class MyFramePanel extends JFrame{
 				JList list1 = null;// 定义列表框
@@ -430,14 +484,17 @@ public class CLIENT {
 
 			
 			CLIENT cl=new CLIENT(1234,ipAS,ipTGS,ipSERVER);
-			try {
+
 				cl.SendAndReceive();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+			
+			
+			
+			//OK=1;
+			if(OK==1) JOptionPane.showMessageDialog(this, "认证成功","服务",JOptionPane.INFORMATION_MESSAGE);
+			else{
+				JOptionPane.showMessageDialog(this, "认证失败","服务",JOptionPane.INFORMATION_MESSAGE);
 			}
-			OK=1;
-			JOptionPane.showMessageDialog(this, "认证成功","服务",JOptionPane.INFORMATION_MESSAGE);
 			return;
 			
 		}	
