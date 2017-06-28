@@ -63,14 +63,14 @@ public class SERVER {
 				vc.setS(d.decode(str, key));
 				
 				String text3="";
-				for(int i=0;i<vc.getnewS().size();++i)
+				for(int i=0;i<vc.getS().size();++i)
 				{
-					text3+=vc.getnewS().get(i);
+					text3+=vc.getS().get(i);
 					text3+="\n";
 				}
 				
-				demo.beginadd(vc.getnewS().get(2), text3);
-				
+				demo.beginadd(vc.getS().get(2), text3);
+				System.out.println(demo.getuserlist().get(0));
 				
 				
 			} catch (IOException e) {
@@ -142,6 +142,10 @@ class VtoC{
 	{
 		this.S=S;
 	}
+	public ArrayList<String> getS()
+	{
+		return S;
+	}
 	private ArrayList<String> S=new ArrayList<String>();
 	
 	private ArrayList<String> newkey=new ArrayList<String>();
@@ -211,6 +215,14 @@ class MyList {
 	public void beginadd(String user,String messa){
 		userlist.add(user);
 		message.add(messa);
+	}
+	public Vector<String> getuserlist()
+	{
+		return userlist;
+	}
+	public Vector<String> getmessage()
+	{
+		return message;
 	}
 	
 	public void enddelete(String str)
