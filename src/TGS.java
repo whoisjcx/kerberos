@@ -80,50 +80,74 @@ public class TGS {
 				  DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 				  String time=format.format(date); 
 				t1.setText(t1.getText()+time+"\n");  
-				
-				key.add(Kastgs);
-				s=d.decode(str, key);
-				t1.setText(t1.getText()+s.get(8)+"请求访问"+s.get(1)+"\n");
-				
-				for(int i=0;i<s.size();++i){
-					System.out.println("c->tgs----i:"+s.get(i));
-					t2.append(s.get(i));
-					t2.append("\n");
-				}
-				Ktgsv=sql.select(s.get(1));
-				if(Ktgsv==null){
+				if(tmp2!=2){
 					ws.clear();
 					tmp2=1<<7;
-					tmp+=(char)tmp2;
+					tmp+=tmp2;
 					ws.add(tmp);
 					willsend=d.encode(ws, null);
-					t1.append("无此服务器，拒绝数据包");
+					t1.append("未知数据包，错误");
 				}
 				else{
-					ws.clear();
-					tmp+=(char)3;
-					ws.add(tmp);
-					ws.add(randomkey());
-					IDv=s.get(1);
-					ws.add(IDv);
-					ws.add(getTS());
-					ws.add(ws.get(1));
-					ws.add(s.get(8));
-					ws.add(s.get(9));
-					ws.add(s.get(1));
-					ws.add(ws.get(3));
-					ws.add(lifetime);
-					key.clear();
-					key.add(Ktgsv);
-					key.add(s.get(2));
-					willsend=d.encode(ws, key);
-					t1.append("认证票据包");
-				}
-				for(int i=0;i<ws.size();++i){
-					System.out.println(i+":"+ws.get(i));
+					key.add(Kastgs);
+					s=d.decode(str, key);
+					for(int i=0;i<s.size();++i){
+						System.out.println("c->tgs----i:"+s.get(i));
+						t2.append(s.get(i));
+						t2.append("\n");
+					}
+					t1.setText(t1.getText()+s.get(8)+"请求访问"+s.get(1)+"\n");
+					long time2=System.currentTimeMillis();
+					long time1=Long.parseLong(s.get(6));
+					time2%=100000000;
+					if(time2-time1>5000){
+						ws.clear();
+						tmp2=1<<7;
+						tmp+=tmp2;
+						ws.add(tmp);
+						willsend=d.encode(ws, null);
+						t1.append("验证超时，错误");
+					}
+					else{
+
+						Ktgsv=sql.select(s.get(1));
+						if(Ktgsv==null){
+							ws.clear();
+							tmp2=1<<7;
+							tmp+=(char)tmp2;
+							ws.add(tmp);
+							willsend=d.encode(ws, null);
+							t1.append("无此服务器，拒绝数据包");
+						}
+						else{
+							ws.clear();
+							tmp+=(char)3;
+							ws.add(tmp);
+							ws.add(randomkey());
+							IDv=s.get(1);
+							ws.add(IDv);
+							ws.add(getTS());
+							ws.add(ws.get(1));
+							ws.add(s.get(8));
+							ws.add(s.get(9));
+							ws.add(s.get(1));
+							ws.add(ws.get(3));
+							ws.add(lifetime);
+							key.clear();
+							key.add(Ktgsv);
+							key.add(s.get(2));
+							willsend=d.encode(ws, key);
+							t1.append("认证票据包");
+						}
+						for(int i=0;i<ws.size();++i){
+							System.out.println(i+":"+ws.get(i));
+						}
+						
+						System.out.println("key----:"+key.get(1));
+					}
+					
 				}
 				
-				System.out.println("key----:"+key.get(1));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

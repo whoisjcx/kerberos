@@ -66,7 +66,7 @@ public class AS {
 					tmp+=tmp2;
 					ws.add(tmp);
 					willsend=d.encode(ws, null);
-					t1.append("认证失败数据包");
+					t1.append("未知数据包，错误");
 				}
 				else{
 					Date date=new Date(System.currentTimeMillis()); 
@@ -74,7 +74,6 @@ public class AS {
 					  String time=format.format(date); 
 					t1.setText(t1.getText()+time+"\n");  
 					s=d.decode(str, key);
-					
 					t1.setText(t1.getText()+s.get(1)+"请求认证！\n");
 					for(int i=0;i<s.size();++i){
 						System.out.println(i+":"+s.get(i));	//名文内容
