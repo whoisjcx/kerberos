@@ -99,7 +99,7 @@ public class AS {
 					ws.add(ws.get(3));
 					ws.add(ws.get(4));
 					willsend=d.encode(ws, key);
-					t1.append("票据包");
+					t1.append("认证票据包");
 				}
 				for(int i=0;i<ws.size();++i){
 					System.out.println(i+":"+ws.get(i));

@@ -83,20 +83,24 @@ public class TGS {
 				
 				key.add(Kastgs);
 				s=d.decode(str, key);
-				t1.setText(t1.getText()+"收到请求！\n\n");
+				t1.setText(t1.getText()+s.get(8)+"请求访问"+s.get(1)+"\n");
 				
 				for(int i=0;i<s.size();++i){
 					System.out.println("c->tgs----i:"+s.get(i));
+					t2.append(s.get(i));
+					t2.append("\n");
 				}
-				IDv=sql.select(s.get(1));
-				if(IDv==null){
+				Ktgsv=sql.select(s.get(1));
+				if(Ktgsv==null){
 					ws.clear();
 					tmp2=1<<7;
 					tmp+=(char)tmp2;
 					ws.add(tmp);
 					willsend=d.encode(ws, null);
+					t1.append("无此服务器，拒绝数据包");
 				}
 				else{
+					ws.clear();
 					tmp+=(char)3;
 					ws.add(tmp);
 					ws.add(randomkey());
@@ -109,15 +113,17 @@ public class TGS {
 					ws.add(s.get(1));
 					ws.add(ws.get(3));
 					ws.add(lifetime);
+					key.clear();
+					key.add(Ktgsv);
+					key.add(s.get(2));
+					willsend=d.encode(ws, key);
+					t1.append("认证票据包");
 				}
 				for(int i=0;i<ws.size();++i){
 					System.out.println(i+":"+ws.get(i));
 				}
-				key.clear();
-				key.add(Ktgsv);
-				key.add(s.get(2));
+				
 				System.out.println("key----:"+key.get(1));
-				willsend=d.encode(ws, key);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -130,7 +136,7 @@ public class TGS {
 			}
 			System.out.println(willsend);
 			writer.println(willsend);
-			t1.setText(t1.getText()+"已发送认证！\n\n");
+			t1.setText(t1.getText()+"已发送！\n\n");
 			writer.flush();
 			
 			writer.close();
@@ -201,11 +207,12 @@ public class TGS {
 	}
 	
 	public static void main(String args[]){
-		/***
+
 		TGS tgs=new TGS();
-		tgs.TGSstart();*/
+		tgs.TGSstart();
 		MyFramePanel2 frame = new MyFramePanel2();
 		
+		/***
 		try {
 			mysql sql=new mysql();
 			System.out.println(sql.select("IDV12345"));
@@ -213,6 +220,7 @@ public class TGS {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		***/
 		
 	}
 	
