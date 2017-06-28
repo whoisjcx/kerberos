@@ -59,73 +59,83 @@ public class AS {
 				//str=str.substring(0, str.length()-4);
 				System.out.println(str);//密文内容
 				tmp2=str.charAt(0);
-				t2.setText(t2.getText()+"收到"+tmp2+"号数据包,明文：\n");  
-				Date date=new Date(System.currentTimeMillis()); 
-				  DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-				  String time=format.format(date); 
-				t1.setText(t1.getText()+time+"\n");  
-								
-				s=d.decode(str, key);
-				t1.setText(t1.getText()+s.get(1)+"请求认证！\n");
-				for(int i=0;i<s.size();++i){
-					System.out.println(i+":"+s.get(i));	//名文内容
-					t2.setText(t2.getText()+s.get(i)+"\n");  
-				}
-				Kc=sql.select(s.get(1));
-				t2.setText(t2.getText()+"\n");
-				if(Kc==null){
+				t2.setText(t2.getText()+"收到"+tmp2+"号数据包\n");
+				if(tmp2!=0){
 					ws.clear();
 					tmp2=1<<7;
 					tmp+=tmp2;
 					ws.add(tmp);
-					t1.append("查无此人，认证失败包");
 					willsend=d.encode(ws, null);
+					t1.append("认证失败数据包");
 				}
 				else{
-					tmp="";
-					tmp+=(char)1;
-					ws.add(tmp);
-					tmp=randomkey();
-					key.add(Kastgs);
-					key.add(Kc);
-					ws.add(tmp);
-					ws.add(IDtgs);
-					ws.add(getTS());
-					ws.add(lifetime);
-					ws.add(ws.get(1));
-					ws.add(s.get(1));
-					ws.add(getip(socket));
-					ws.add(ws.get(2));
-					ws.add(ws.get(3));
-					ws.add(ws.get(4));
-					willsend=d.encode(ws, key);
-					t1.append("认证票据包");
-				}
-				for(int i=0;i<ws.size();++i){
-					System.out.println(i+":"+ws.get(i));
-				}
-
-				key.remove(0);
-				for(int i=0;i<key.size();++i){
-					System.out.println("key----:"+key.get(i));
-				}
-				ws=d.decode(tmp, key);
-				for(int i=0;i<ws.size();++i){
-					System.out.println(i+":"+ws.get(i));
-				}
-				for(int i=0;i<ws.size();++i){
-					for(int j=0;j<ws.get(i).length();++j){
-						System.out.print((int)ws.get(i).charAt(j));
+					Date date=new Date(System.currentTimeMillis()); 
+					  DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+					  String time=format.format(date); 
+					t1.setText(t1.getText()+time+"\n");  
+					s=d.decode(str, key);
+					
+					t1.setText(t1.getText()+s.get(1)+"请求认证！\n");
+					for(int i=0;i<s.size();++i){
+						System.out.println(i+":"+s.get(i));	//名文内容
+						t2.setText(t2.getText()+s.get(i)+"\n");  
 					}
-					System.out.println("");
-				}
+					Kc=sql.select(s.get(1));
+					t2.setText(t2.getText()+"\n");
+					if(Kc==null){
+						ws.clear();
+						tmp2=1<<7;
+						tmp+=tmp2;
+						ws.add(tmp);
+						t1.append("查无此人，认证失败包");
+						willsend=d.encode(ws, null);
+					}
+					else{
+						tmp="";
+						tmp+=(char)1;
+						ws.add(tmp);
+						tmp=randomkey();
+						key.add(Kastgs);
+						key.add(Kc);
+						ws.add(tmp);
+						ws.add(IDtgs);
+						ws.add(getTS());
+						ws.add(lifetime);
+						ws.add(ws.get(1));
+						ws.add(s.get(1));
+						ws.add(getip(socket));
+						ws.add(ws.get(2));
+						ws.add(ws.get(3));
+						ws.add(ws.get(4));
+						willsend=d.encode(ws, key);
+						t1.append("认证票据包");
+						
+						key.remove(0);
+						for(int i=0;i<key.size();++i){
+							System.out.println("key----:"+key.get(i));
+						}
+						ws=d.decode(tmp, key);
+						for(int i=0;i<ws.size();++i){
+							System.out.println(i+":"+ws.get(i));
+						}
+						for(int i=0;i<ws.size();++i){
+							for(int j=0;j<ws.get(i).length();++j){
+								System.out.print((int)ws.get(i).charAt(j));
+							}
+							System.out.println("");
+						}
 
-				for(int i=0;i<willsend.length();++i){
-					System.out.print((int)willsend.charAt(i)+"-");
+						for(int i=0;i<willsend.length();++i){
+							System.out.print((int)willsend.charAt(i)+"-");
+						}
+						System.out.println("");
+					}
+					for(int i=0;i<ws.size();++i){
+						System.out.println(i+":"+ws.get(i));
+					}
+
+					
 				}
-				System.out.println("");
-				
-				//System.out.println("size----:"+tmp.length());
 			} catch (IOException | ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
 			} 

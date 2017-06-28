@@ -14,17 +14,24 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class CLIENT {
 
 	static int port=1234;
+	static int OK=0;
 	static String ipAS="127.0.0.1";
 	static String ipTGS="127.0.0.1";
 	static String ipSERVER="127.0.0.1";
@@ -284,37 +291,77 @@ public class CLIENT {
 		;
 
 		class MyFramePanel extends JFrame{
-				TextArea tt1= new TextArea(19,39);
+				JList list1 = null;// 定义列表框
+				Vector<String> filelist = new Vector<String>();
+				//TextArea tt1= new TextArea(19,39);
 				TextArea tt2= new TextArea(19,39);
 				JPanel p1 = new JPanel();
 				JPanel p2 = new JPanel();		
-				JLabel l1 = new JLabel("事件");
+				JLabel l1 = new JLabel("上传文件路径");
+				
+				JLabel no1 = new JLabel("                                                                           ");
+				JLabel no2 = new JLabel("                                                                           ");
+				JLabel no3 = new JLabel("                                                                           ");
+				JLabel no4 = new JLabel("                                                                           ");
+				JLabel no5 = new JLabel("--------------------------------------------");
+				JLabel no6 = new JLabel("--------------------------------------------");
+				JLabel no7 = new JLabel("                                                                           ");
+				JLabel no8 = new JLabel("                                                                           ");
+				JLabel l3 = new JLabel("   下载保存文件路径      ");
+				JTextField t1=new JTextField(20);
+				JTextField t2=new JTextField(20);
 				JLabel l2 = new JLabel("数据包情况");
-				JButton b1 = new JButton("清屏");
-				JButton b2 = new JButton("清屏");
+				JButton b1 = new JButton("上传");
+				JButton b2 = new JButton("下载");
 				MyFramePanel(){
-					this.setSize(600,400);
+					this.setSize(600,350);
 					setResizable(false);  					
 					Container container = this.getContentPane();
 					GridLayout g = new GridLayout(1,2,10,10);
 					container.setLayout(g);
-										
-					p1.add(l1);
+					this.list1 = new JList(filelist);
+					list1.addListSelectionListener(new ListSelectionListener(){
+			        	public void valueChanged(ListSelectionEvent e){
+			        		do_user_valueChanged(e);
+			        	}
+			        });
+					list1.setBorder(BorderFactory.createTitledBorder("文件列表"));
+			        list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			        p1.add(no2);
+			        p1.add(no6);
+			        p1.add(l1);
+					p1.add(t1);
 					p2.add(l2);
-					p1.add(tt1);
+					//p1.add(list1);
+					//p1.add(tt1);
 					p2.add(tt2);
 					p1.add(b1);
-					p2.add(b2);
+					p1.add(no7);
+					//p1.add(no1);
+					
+					//p1.add(no3);
+					p1.add(no4);
+					p1.add(no5);
+					p1.add(l3);
+					p1.add(t2);
+					p1.add(b2);
+					p1.add(no8);
 				
-					tt1.setText("Listening......\n\n");	
+					//tt1.setText("Listening......\n\n");	
+					container.add(this.list1);
 					container.add(p1);
 					container.add(p2);
 					
 					this.setTitle("服务页面");
 					this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					this.setVisible(true);
-				} 								
+				} 	
+				protected void do_user_valueChanged(ListSelectionEvent e){
+			    	System.out.println(list1.getSelectedIndex());
+			    	//text3.setText(list1.getSelectedValue().toString());
+			    }
 			}	
+		
 		ClientUI(){
 			
 			JFrame jf = new JFrame("Client");
@@ -353,8 +400,7 @@ public class CLIENT {
 			
 			bt2.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
-					jf.setVisible(false);
-					method2();
+					if(method2()!=0)jf.setVisible(false);
 				}
 			});
 			
@@ -382,7 +428,7 @@ public class CLIENT {
 				return;
 			} 
 
-			JOptionPane.showMessageDialog(this, "认证成功","服务",JOptionPane.INFORMATION_MESSAGE);
+			
 			CLIENT cl=new CLIENT(1234,ipAS,ipTGS,ipSERVER);
 			try {
 				cl.SendAndReceive();
@@ -390,14 +436,21 @@ public class CLIENT {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			OK=1;
+			JOptionPane.showMessageDialog(this, "认证成功","服务",JOptionPane.INFORMATION_MESSAGE);
 			return;
 			
 		}	
 		
-		void method2()
+		int method2()
 		{
+			if(OK==0){
+				JOptionPane.showMessageDialog(this, "你不是验证用户","警告",JOptionPane.INFORMATION_MESSAGE);
+				return 0;
+			}
 			MyFramePanel frame = new MyFramePanel();
 			t1.setText("");
+			return 1;
 		}	
 		
 	}
