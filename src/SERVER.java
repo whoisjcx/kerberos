@@ -1,4 +1,10 @@
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.TextArea;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -7,10 +13,20 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
-
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class SERVER {
+	
+	MyList demo = new MyList();
 	
 	private int port=3456;	//监听端口
 	
@@ -43,7 +59,6 @@ public class SERVER {
 					if(tmp2=='完') break;
 					str+=(char)tmp2;
 				}
-				System.out.println("server47行:"+str);
 				key.add(Ktgsv);
 				vc.setS(d.decode(str, key));
 				
@@ -146,6 +161,131 @@ class VtoC{
 		return newS;
 	}
 	
+}
+
+class MyList {
+	private String Path;
+	void setPath(String str)
+	{
+		this.Path=str;
+	}
+	
+    private JFrame frame = new JFrame("Server");
+    private Container container = frame.getContentPane();
+    private JList list1 = null;// 定义列表框
+    
+    TextArea text2=new TextArea(19,25);
+    TextArea text3=new TextArea(19,25);
+    
+	JLabel L2 = new JLabel("文件列表");
+	JLabel L3 = new JLabel("事件信息");
+	
+	JPanel jp2 = new JPanel();
+	JPanel jp3 = new JPanel();	
+    
+	Vector<String> userlist = new Vector<String>();
+	Vector<String> filelist = new Vector<String>();
+	Vector<String> message = new Vector<String>();
+	
+	public void beginadd(String user,String messa){
+		userlist.add(user);
+		message.add(messa);
+	}
+	
+	public void enddelete(String str)
+	{
+		for(int i=0;i<userlist.size();++i)
+		{
+			if(userlist.get(i).equals(str))
+			{
+				userlist.remove(i);
+				message.remove(i);
+			}
+		}
+	}
+	
+	FileName fn=new FileName();
+	
+	public void totext2(String path)
+	{
+		String te2="";
+		ArrayList<String> al = fn.getfilename(path);
+		for(int i=0;i<al.size();++i)
+		{
+			te2+=al.get(i);
+			te2+="\n";
+		}
+		text2.setText(te2);
+	}
+	
+	public void refresh()
+	{
+		totext2(Path);
+	}
+ 
+    public MyList() {
+    	
+    	ArrayList<String> tem = new ArrayList<String>();
+        this.frame.setLayout(new GridLayout(1, 2));
+        Vector<String> user = new Vector<String>(tem);
+
+        this.list1 = new JList(user);
+        user.add("sdf");
+        
+        setPath("C:\\Users\\chenlvhao\\Desktop\\send");
+        totext2(Path);
+        
+        list1.addListSelectionListener(new ListSelectionListener(){
+        	public void valueChanged(ListSelectionEvent e){
+        		do_user_valueChanged(e);
+        	}
+        });
+        
+		GridLayout g = new GridLayout(1,3,10,10);
+		container.setLayout(g);
+        
+        list1.setBorder(BorderFactory.createTitledBorder("用户名"));
+        list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        jp2.add(L2);
+        jp2.add(text2);
+        jp3.add(L3);
+        jp3.add(text3);
+        
+        container.add(this.list1);
+        container.add(this.jp2);
+        container.add(this.jp3);
+        this.frame.setSize(630, 380);
+        this.frame.setVisible(true);
+        this.frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent arg0) {
+                System.exit(1);
+            }
+        });
+    }
+    
+    protected void do_user_valueChanged(ListSelectionEvent e){
+    	System.out.println(list1.getSelectedIndex());
+    	text3.setText(list1.getSelectedValue().toString());
+    }
+}
+
+class FileName{
+	
+	public ArrayList<String> getfilename(String path){
+		ArrayList<String> al=new ArrayList<String>();
+		  File f = new File(path);
+	        if (!f.exists()) {
+	            System.out.println(path + " not exists");
+	        }
+
+	        File fa[] = f.listFiles();
+	        for (int i = 0; i < fa.length; i++) {
+	            File fs = fa[i];
+	            al.add(fs.getName());
+	        }
+	        return al;
+	}
 }
 
 
