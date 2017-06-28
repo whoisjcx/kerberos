@@ -60,6 +60,16 @@ public class SERVER {
 					str+=(char)tmp2;
 				}
 				key.add(Ktgsv);
+				
+				String text3="";
+				for(int i=0;i<vc.getnewS().size();++i)
+				{
+					text3+=vc.getnewS().get(i);
+					text3+="\n";
+				}
+				
+				demo.beginadd(vc.getnewS().get(2), text3);
+				
 				vc.setS(d.decode(str, key));
 				
 			} catch (IOException e) {
@@ -113,6 +123,8 @@ public class SERVER {
 	
 	public void Serverstart()
 	{
+        demo.setPath("C:\\Users\\chenlvhao\\Desktop\\send");
+        demo.refresh();
 		new ListenThread().start();
 	}
 	
@@ -120,7 +132,6 @@ public class SERVER {
 		String s="";
 		SERVER se=new SERVER();
 		se.Serverstart();
-		
 	}
 }
 
@@ -177,6 +188,15 @@ class MyList {
     TextArea text2=new TextArea(19,25);
     TextArea text3=new TextArea(19,25);
     
+    void settext2(String str)
+    {
+    	text2.setText(str);
+    }
+    void settext3(String str)
+    {
+    	text3.setText(str);
+    }
+    
 	JLabel L2 = new JLabel("文件列表");
 	JLabel L3 = new JLabel("事件信息");
 	
@@ -230,10 +250,6 @@ class MyList {
         Vector<String> user = new Vector<String>(tem);
 
         this.list1 = new JList(user);
-        user.add("sdf");
-        
-        setPath("C:\\Users\\chenlvhao\\Desktop\\send");
-        totext2(Path);
         
         list1.addListSelectionListener(new ListSelectionListener(){
         	public void valueChanged(ListSelectionEvent e){
@@ -266,7 +282,7 @@ class MyList {
     
     protected void do_user_valueChanged(ListSelectionEvent e){
     	System.out.println(list1.getSelectedIndex());
-    	text3.setText(list1.getSelectedValue().toString());
+    	text3.setText(message.get(list1.getSelectedIndex()));
     }
 }
 
