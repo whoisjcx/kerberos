@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -184,7 +185,7 @@ class MyList {
 	
     private JFrame frame = new JFrame("Server");
     private Container container = frame.getContentPane();
-    private JList list1 = null;// 定义列表框
+    private JList list1 = new JList();// 定义列表框
     
     TextArea text2=new TextArea(19,25);
     TextArea text3=new TextArea(19,25);
@@ -204,12 +205,14 @@ class MyList {
 	JPanel jp2 = new JPanel();
 	JPanel jp3 = new JPanel();	
     
-	Vector<String> userlist = new Vector<String>();
+	DefaultListModel userlist=new DefaultListModel();
+	//DefaultListModel message=new DefaultListModel();
+	//Vector<String> userlist = new Vector<String>();
 	Vector<String> filelist = new Vector<String>();
 	Vector<String> message = new Vector<String>();
 	
 	public void beginadd(String user,String messa){
-		userlist.add(user);
+		userlist.addElement(user);
 		message.add(messa);
 	}
 	
