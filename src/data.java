@@ -7,7 +7,6 @@ public class data {
 	String encode(ArrayList<String> S,ArrayList<String> Key){
 		String ret="";
 		char t=S.get(0).charAt(0);
-		t<<=4;t>>=4;
 		switch (t){
 			case 0:{
 				for(String it:S) ret+=it;
@@ -54,11 +53,23 @@ public class data {
 				ret+=S.get(0);
 				ret+=des.Encryptions(S.get(1), Key.get(0));
 			};break;
-			case 6:{
+			case ((1)<<4):{
 				
 			};break;
-			case 7:{
+			case ((2)<<4):{
 				
+			};break;
+			case ((3)<<4):{
+				
+			};break;
+			case ((4)<<4):{
+				
+			};break;
+			case ((5)<<4):{
+				
+			};break; 
+			case (1<<7):{
+				ret+=S.get(0);
 			};break;
 		}
 		return ret+"Íê";
@@ -139,10 +150,8 @@ public class data {
 				ret.add(tmp1.substring(24,32));
 				ret.add(tmp1.substring(32,40));
 				ret.add(tmp1.substring(40,48));
-				
 				tmp1=S.substring(49);
 				tmp1=des.Dectyptions(tmp1,ret.get(1));
-				
 				ret.add(tmp1.substring(0,8));
 				ret.add(tmp1.substring(8,16));
 				ret.add(tmp1.substring(16,24));
@@ -154,11 +163,23 @@ public class data {
 				ret.add(t);
 				ret.add(des.Dectyptions(S.substring(1), Key.get(0)));
 			};break;
-			case 6:{
+			case ((1)<<4):{
 				
 			};break;
-			case 7:{
+			case ((2)<<4):{
 				
+			};break;
+			case ((3)<<4):{
+				
+			};break;
+			case ((4)<<4):{
+				
+			};break;
+			case ((5)<<4):{
+				
+			};break; 
+			case (1<<7):{
+				ret=null;
 			};break;
 		}
 		return ret;

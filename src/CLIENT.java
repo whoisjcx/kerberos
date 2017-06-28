@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -22,20 +24,20 @@ import javax.swing.JTextField;
 
 public class CLIENT {
 
-	int port;
-	String ipAS;
-	String ipTGS;
-	String ipSERVER;
-	String IDc="IDc12345";
-	String IDtgs="IDtgs123";
-	String IDv="IDv12345";
+	static int port=1234;
+	static String ipAS="127.0.0.1";
+	static String ipTGS="127.0.0.1";
+	static String ipSERVER="127.0.0.1";
+	static String IDc="IDc12345";
+	static String IDtgs="IDtgs123";
+	static String IDv="IDv12345";
 	ArrayList<String> key=new ArrayList<String>();
 	
-	public CLIENT(int port,String ipAS,String ipTGS,String ipSERVER){
-		this.port=port;
-		this.ipAS=ipAS;
-		this.ipTGS=ipTGS;
-		this.ipSERVER=ipSERVER;
+	public CLIENT(int cport,String cipAS,String cipTGS,String cipSERVER){
+		port=cport;
+		ipAS=cipAS;
+		ipTGS=cipTGS;
+		ipSERVER=cipSERVER;
 		key.add("00000000");
 	}
 	
@@ -252,57 +254,98 @@ public class CLIENT {
 	
 	public static void main(String args[]){
 		ClientUI ui=new ClientUI();
-		CLIENT cl=new CLIENT(1234,"127.0.0.1","127.0.0.1","127.0.0.1");
+		/***
+		CLIENT cl=new CLIENT(1234,ipAS,ipTGS,ipSERVER);
 		try {
 			cl.SendAndReceive();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		****/
 	}
 	
 	static class ClientUI extends JFrame{
 
-		JButton bt1=new JButton("请求服务");	
-		JButton bt2=new JButton("取消");
+		JButton bt1=new JButton("请求认证");	
+		JButton bt2=new JButton("进入服务");
 		
-		JTextField t1=new JTextField(15);
-		JTextField t2=new JTextField(15);
-		JLabel l1=new JLabel("用户名");
-		JLabel l2=new JLabel("要访问服务器名");
+		JTextField t1=new JTextField(20);
+		JTextField t2=new JTextField(20);
+		JTextField t3=new JTextField(20);
+		JLabel l1=new JLabel("用户名    ");
+		JLabel l2=new JLabel("服务器名");
+		JLabel l3=new JLabel("服务器IP ");
 		JPanel p1=new JPanel();
 		JPanel p2=new JPanel();
 		JPanel p3=new JPanel();
 		//JPanel p4=new JPanel();
-		
+		TextArea t4= new TextArea(19,39);
+		;
+
+		class MyFramePanel extends JFrame{
+				TextArea tt1= new TextArea(19,39);
+				TextArea tt2= new TextArea(19,39);
+				JPanel p1 = new JPanel();
+				JPanel p2 = new JPanel();		
+				JLabel l1 = new JLabel("事件");
+				JLabel l2 = new JLabel("数据包情况");
+				JButton b1 = new JButton("清屏");
+				JButton b2 = new JButton("清屏");
+				MyFramePanel(){
+					this.setSize(600,400);
+					setResizable(false);  					
+					Container container = this.getContentPane();
+					GridLayout g = new GridLayout(1,2,10,10);
+					container.setLayout(g);
+										
+					p1.add(l1);
+					p2.add(l2);
+					p1.add(tt1);
+					p2.add(tt2);
+					p1.add(b1);
+					p2.add(b2);
+				
+					tt1.setText("Listening......\n\n");	
+					container.add(p1);
+					container.add(p2);
+					
+					this.setTitle("服务页面");
+					this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					this.setVisible(true);
+				} 								
+			}	
 		ClientUI(){
 			
 			JFrame jf = new JFrame("Client");
-			jf.setSize(300,150);
+			jf.setSize(310,490);
+			jf.setResizable(false);
 			Container container=jf.getContentPane();
-			FlowLayout fleft=new FlowLayout(FlowLayout.CENTER,10,10);
+			//FlowLayout fleft=new FlowLayout(FlowLayout.CENTER,10,10);
 			FlowLayout fright=new FlowLayout(FlowLayout.CENTER,10,10);
 			
 			BorderLayout border=new BorderLayout(10,10);
 			container.setLayout(border);
-			p1.setLayout(fleft);
-			p1.add(l1);
-			p1.add(t1);
+			//p1.setLayout(fleft);
+			p3.add(l1);
+			p3.add(t1);
 			
 			p2.setLayout(fright);
 			p2.add(bt1);
 			p2.add(bt2);
 			p3.add(l2);
 			p3.add(t2);
-			
-			container.add(p1, BorderLayout.NORTH);
+			p3.add(l3);
+			p3.add(t3);
+			p3.add(t4);
+			//container.add(p1, BorderLayout.NORTH);
 			container.add(p3, BorderLayout.CENTER);
 			container.add(p2, BorderLayout.SOUTH);
 			
 			bt1.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){	
 					IP=t1.getText();
-					jf.setVisible(false);
+					//jf.setVisible(false);
 					method1();
 		
 				}
@@ -310,6 +353,7 @@ public class CLIENT {
 			
 			bt2.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
+					jf.setVisible(false);
 					method2();
 				}
 			});
@@ -326,13 +370,27 @@ public class CLIENT {
 		
 		void method1()
 		{
-			IP=t1.getText();
-			JOptionPane.showMessageDialog(this, "选择服务","服务",JOptionPane.INFORMATION_MESSAGE);
+			//IP=t1.getText();
+			ipAS="127.0.0.1";
+			ipTGS="127.0.0.1";
+			ipSERVER=t3.getText();
+			IDc=t1.getText();
+			IDtgs="IDtgs123";
+			IDv=t2.getText();
+			if(IDc.length()!=8||IDv.length()!=8){
+				JOptionPane.showMessageDialog(this, "请输入合法ID","警告",JOptionPane.INFORMATION_MESSAGE);
+				return;
+			} 
+
+			JOptionPane.showMessageDialog(this, "认证成功","服务",JOptionPane.INFORMATION_MESSAGE);
+
+			return;
 			
 		}	
 		
 		void method2()
 		{
+			MyFramePanel frame = new MyFramePanel();
 			t1.setText("");
 		}	
 		
