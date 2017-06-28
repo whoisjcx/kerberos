@@ -219,7 +219,7 @@ class MyList {
 		userlist.addElement(user);
 		message.add(messa);
 	}
-	public Vector<String> getuserlist()
+	public DefaultListModel getuserlist()
 	{
 		return userlist;
 	}
