@@ -52,9 +52,12 @@ public class AS {
 					str+=(char)tmp2;
 				}	//str为从client接收的数据
 				//str=str.substring(0, str.length()-4);
-				System.out.println(str);
+				System.out.println(str);//密文内容
 				t1.setText(t1.getText()+"收到请求！\n\n");
 				s=d.decode(str, key);
+				for(int i=0;i<s.size();++i){
+					System.out.println(i+":"+s.get(i));	//名文内容
+				}
 				tmp="";
 				tmp+=(char)1;
 				ws.add(tmp);
