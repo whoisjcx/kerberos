@@ -54,19 +54,27 @@ public class data {
 				ret+=des.Encryptions(S.get(1), Key.get(0));
 			};break;
 			case ((1)<<4):{
-				
+				ret+=S.get(0);
 			};break;
 			case ((2)<<4):{
-				
+				ret+=S.get(0);
+				for(String s:S){
+					ret+=s;
+					ret+="іж";
+				}
 			};break;
 			case ((3)<<4):{
-				
+				ret+=S.get(0);
+				ret+=S.get(1);
+				ret+="Бъ";
+				ret+=des.Encryptions(S.get(1),Key.get(0));
 			};break;
 			case ((4)<<4):{
-				
+				ret+=S.get(0);
 			};break;
 			case ((5)<<4):{
-				
+				ret+=S.get(0);
+				ret+=S.get(1);
 			};break; 
 			case (1<<7):{
 				ret+=S.get(0);
@@ -164,25 +172,52 @@ public class data {
 				ret.add(des.Dectyptions(S.substring(1), Key.get(0)));
 			};break;
 			case ((1)<<4):{
-				
+				ret=new ArrayList<String>();
+				String t="";
+				t+=S.charAt(0);
+				ret.add(t);
 			};break;
 			case ((2)<<4):{
+				ret=new ArrayList<String>();
+				String t="";
+				t+=S.charAt(0);
+				ret.add(t);
+				String[] A=S.substring(1).split("іж");
+				for(String tt:A){
+					if(tt.length()>0){
+						ret.add(tt);
+					}
+				}
 				
 			};break;
 			case ((3)<<4):{
+				ret=new ArrayList<String>();
+				String t="";
+				t+=S.charAt(0);
+				ret.add(t);
+				String[] A=S.substring(1).split("Бъ");
+				ret.add(A[0]);
+				ret.add(des.Dectyptions(A[1], Key.get(0)));
 				
 			};break;
 			case ((4)<<4):{
-				
+				ret=new ArrayList<String>();
+				String t="";
+				t+=S.charAt(0);
+				ret.add(t);
 			};break;
 			case ((5)<<4):{
-				
+				ret=new ArrayList<String>();
+				String t="";
+				t+=S.charAt(0);
+				ret.add(t);
+				ret.add(S.substring(1));
 			};break; 
-			case (1<<7):{
+			case ((1)<<7):{
 				ret=null;
 			};break;
 		}
-		return ret;
+		return ret; 
 	}
 	public static void main(String[] args){
 		int x=19;

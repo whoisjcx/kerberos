@@ -1,16 +1,10 @@
 import java.util.*; 
 public class hello {
 	public static void main(String args[]){
-		long e=5151;
-		ArrayList<Integer> A=new ArrayList<Integer>();
-		A.add(0);
-		A.set(0, 9);
-		System.out.println(A.get(0));
-		char c=(char)254;
-		
-		System.out.println((int)c);
-		for(int i=0;i<256;i++){
-			System.out.println(((char)i)==-1);
+		String S="бя123бя2345бя56бя";
+		String[] A=S.split("бя");
+		for(String s:A){
+			System.out.println(s);
 		}
 		/***
 		System.out.println(Long.toString(e).substring(1));
