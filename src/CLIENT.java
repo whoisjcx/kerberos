@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+
+
 public class CLIENT {
 
 	static int port=1234;
@@ -42,6 +45,7 @@ public class CLIENT {
 	static String IDtgs="IDtgs123";
 	static String IDv="IDv12345";
 	static String Kcv="00000000";
+	static JFrame jf = new JFrame("Client");
 	ArrayList<String> key=new ArrayList<String>();
 	String[] pack1={"Kc-tgs:","IDtgs:","Time:","Lifetime:","Ticket:"};
 	String[] pack3={"Kc-v:","IDv:","Time:","Ticket:"};
@@ -56,241 +60,249 @@ public class CLIENT {
 		ipSERVER=cipSERVER;
 		key.add("00000000");
 	}
-	
-	
-	void SendAndReceive()
-	{
-		try {
-		Socket socket=null;
-		BufferedReader reader = null;
-		PrintWriter writer = null;
-		String willsend="";
-		String tmp="";
-		socket=new Socket(ipAS,port);
-		
-		data d=new data();
-		ArrayList<String> res=new ArrayList<String>();
-		if(socket!=null)
-		{
-			reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
-			writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
-			tmp+=(char)0;
-			res.add(tmp);
-			res.add(IDc);
-			res.add(IDtgs);
-			res.add(getTS());
-			willsend=d.encode(res, key);
-			System.out.println(willsend);
-			writer.print(willsend);
-			writer.flush();
-			String str1="";
-			String temstr="";
-			int tmp2;
-			int flag=0;
-			while((tmp2=reader.read())!=-1){
-				if(tmp2=='完') break;
-				str1+=(char)tmp2;
-			}	
-			tmp2=str1.charAt(0);
-			if(tmp2!=1){
-				OK=0;
-				socket.close();
-				return;
-			}
-			else OK=1;
-			t4.append("收到"+tmp2+"号数据包,明文如下\n");
-			res=d.decode(str1, key);
-			if(res==null){
-				OK=0;
-				socket.close();
-				return;
-			}
-			else{
-				
-				System.out.println("size----:"+str1.length());
-				System.out.println("str1----:"+str1);
-				for(int i=0;i<str1.length();++i){
-					System.out.print((int)str1.charAt(i)+"-");
-				}
-				System.out.println("");
-				for(int i=0;i<key.size();++i){
-					System.out.println("key----:"+key.get(i));
-				}
+	void Cstar(){
+		new SendAndReceive ().start();
+	}
 
-				for(int i=1;i<res.size();++i){
-					System.out.println(i+":"+res.get(i));
-					t4.append(pack1[i-1]+"\n\t"+res.get(i));
+	class SendAndReceive extends Thread{
+		
+		public void run(){
+			try {
+				Socket socket=null;
+				BufferedReader reader = null;
+				PrintWriter writer = null;
+				String willsend="";
+				String tmp="";
+				socket=new Socket(ipAS,port);
+				
+				data d=new data();
+				ArrayList<String> res=new ArrayList<String>();
+				if(socket!=null)
+				{
+					reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
+					writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
+					tmp+=(char)0;
+					res.add(tmp);
+					res.add(IDc);
+					res.add(IDtgs);
+					res.add(getTS());
+					willsend=d.encode(res, key);
+					System.out.println(willsend);
+					writer.print(willsend);
+					writer.flush();
+					String str1="";
+					String temstr="";
+					int tmp2;
+					int flag=0;
+					while((tmp2=reader.read())!=-1){
+						if(tmp2=='完') break;
+						str1+=(char)tmp2;
+					}	
+					tmp2=str1.charAt(0);
+					if(tmp2!=1){
+						OK=0;
+						socket.close();
+						return;
+					}
+					else OK=1;
+					t4.append("收到"+tmp2+"号数据包,明文如下\n");
+					res=d.decode(str1, key);
+					if(res==null){
+						OK=0;
+						socket.close();
+						return;
+					}
+					else{
+						
+						System.out.println("size----:"+str1.length());
+						System.out.println("str1----:"+str1);
+						for(int i=0;i<str1.length();++i){
+							System.out.print((int)str1.charAt(i)+"-");
+						}
+						System.out.println("");
+						for(int i=0;i<key.size();++i){
+							System.out.println("key----:"+key.get(i));
+						}
+
+						for(int i=1;i<res.size();++i){
+							System.out.println(i+":"+res.get(i));
+							t4.append(pack1[i-1]+"\n\t"+res.get(i));
+							t4.append("\n");
+						}
+						t4.append("\n");
+						System.out.println("ticket size:"+res.get(5).length());
+					}
+				}
+				writer.close();
+				reader.close();
+				socket.close();
+				
+				socket=new Socket(ipTGS,2345);
+				if(socket!=null)
+				{
+					ArrayList<String> a=new ArrayList<String>();
+					tmp="";
+					tmp+=(char)2;
+					a.add(tmp);
+					a.add(IDv);
+					a.add(res.get(5));
+					a.add(IDc);
+					a.add(getIP());
+					a.add(getTS());
+					key.clear();
+					key.add(res.get(1));
+					willsend=d.encode(a,key);
+
+					reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
+					writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
+					
+					System.out.println("c->tgs----:"+willsend);
+					for(int i=0;i<willsend.length();++i){
+						System.out.print((int)willsend.charAt(i)+"-");
+					}
+					writer.print(willsend);
+					writer.flush();
+					String str2="";
+					int tmp2;
+					while((tmp2=reader.read())!=-1){
+						if(tmp2=='完') break;
+						str2+=(char)tmp2;
+					}	
+					tmp2=str2.charAt(0);
+					if(tmp2!=3){
+						OK=0;
+						socket.close();
+						return;
+					}
+					else OK=1;
+					t4.append("收到"+tmp2+"号数据包,明文如下\n");
+					res=d.decode(str2, key);
+					Kcv=res.get(1);
+					if(res==null){
+						OK=0;
+						socket.close();
+						return;
+					}
+					System.out.println(str2);
+					res=d.decode(str2,key);
+					System.out.println("key----:"+key.get(0));
+					for(int i=1;i<res.size();++i){
+						System.out.println(i+":"+res.get(i));
+						t4.append(pack3[i-1]+"\n\t"+res.get(i));
+						t4.append("\n");
+					}
 					t4.append("\n");
+					//收到信息保存在str2中
 				}
-				t4.append("\n");
-				System.out.println("ticket size:"+res.get(5).length());
-			}
-		}
-		writer.close();
-		reader.close();
-		socket.close();
-		
-		socket=new Socket(ipTGS,2345);
-		if(socket!=null)
-		{
-			ArrayList<String> a=new ArrayList<String>();
-			tmp="";
-			tmp+=(char)2;
-			a.add(tmp);
-			a.add(IDv);
-			a.add(res.get(5));
-			a.add(IDc);
-			a.add(getIP());
-			a.add(getTS());
-			key.clear();
-			key.add(res.get(1));
-			willsend=d.encode(a,key);
+				
+				writer.close();
+				reader.close();
+				socket.close();
+				
+				socket=new Socket(ipSERVER,3456);
+				if(socket!=null)
+				{
+					CtoV cv=new CtoV();
+					cv.setS(res);
+					cv.setIDc(IDc);
+					cv.ctov();
+					
+					reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
+					writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
+					writer.print(d.encode(cv.getnewS(), cv.getnewKey()));
+					System.out.println("BBBBBBBBBBBBBBBBBBBBBBBB"+d.encode(cv.getnewS(), cv.getnewKey()).length());
+					writer.flush();
+					String str="";
+					//String tmp="";
+					int tmp2;
+					int flag=0;
+					while((tmp2=reader.read())!=-1){
+						if(tmp2=='完') break;
+						str+=(char)tmp2;
+					}
+					System.out.println(str);
+					tmp2=str.charAt(0);
+					if(tmp2!=5){
+						OK=0;
+						socket.close();
+						return;
+					}
+					else OK=1;
+					t4.append("收到"+tmp2+"号数据包,明文如下\n");
+					ArrayList<String> al= d.decode(str, cv.getnewKey());
+					for(int i=1;i<al.size();++i)
+					{
+						System.out.println(al.get(i));
+						t4.append(pack5[i-1]+"\n\t"+al.get(i)); 
+						
+					}
+					t4.append("\n");
+					
+					//收到信息保存在str2中
+					//writer.flush();
+					
+					tmp="";
+					tmp+=(char)((1)<<4);
+					System.out.println("tmp!!!  "+(int)tmp.charAt(0));
+					ArrayList<String> Zsen=new ArrayList<String>();
+					ArrayList<String> Zkey=new ArrayList<String>();
+					Zkey.add(Kcv);
+					Zsen.add(tmp);
+					System.out.println("tmp!!!  "+d.encode(Zsen, Zkey));
+					writer.print(d.encode(Zsen, Zkey));
+					//writer.print(s);
+					writer.flush();
+					
+					if(OK==1) JOptionPane.showMessageDialog( jf, "认证成功","服务", JOptionPane.INFORMATION_MESSAGE);
+					else{
+						JOptionPane.showMessageDialog( jf,"认证失败","服务",JOptionPane.INFORMATION_MESSAGE);
+					}
+					//String tmp="";
+					flag=0;
+					str="";
+					while((tmp2=reader.read())>=0){
+						if(tmp2=='完') break;
+						str+=(char)tmp2;
+					}
+					System.out.println(str);
+					al= d.decode(str, Zkey);
+					System.out.println("ALLLLL   "+(int)str.charAt(0));
+					for(String s:al){
+						if (s.length()<4) continue;
+						filelist.addElement(s);
+						System.out.println("ADD   "+s+"  size"+s.length());
+					}
+				
+					while("dfs".equals("dfs")){
+						if(upfile==1){
 
-			reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
-			writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
-			
-			System.out.println("c->tgs----:"+willsend);
-			for(int i=0;i<willsend.length();++i){
-				System.out.print((int)willsend.charAt(i)+"-");
-			}
-			writer.print(willsend);
-			writer.flush();
-			String str2="";
-			int tmp2;
-			while((tmp2=reader.read())!=-1){
-				if(tmp2=='完') break;
-				str2+=(char)tmp2;
-			}	
-			tmp2=str2.charAt(0);
-			if(tmp2!=3){
-				OK=0;
-				socket.close();
-				return;
-			}
-			else OK=1;
-			t4.append("收到"+tmp2+"号数据包,明文如下\n");
-			res=d.decode(str2, key);
-			Kcv=res.get(1);
-			if(res==null){
-				OK=0;
-				socket.close();
-				return;
-			}
-			System.out.println(str2);
-			res=d.decode(str2,key);
-			System.out.println("key----:"+key.get(0));
-			for(int i=1;i<res.size();++i){
-				System.out.println(i+":"+res.get(i));
-				t4.append(pack3[i-1]+"\n\t"+res.get(i));
-				t4.append("\n");
-			}
-			t4.append("\n");
-			//收到信息保存在str2中
-		}
-		
-		writer.close();
-		reader.close();
-		socket.close();
-		
-		socket=new Socket(ipSERVER,3456);
-		if(socket!=null)
-		{
-			CtoV cv=new CtoV();
-			cv.setS(res);
-			cv.setIDc(IDc);
-			cv.ctov();
-			
-			reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
-			writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
-			writer.print(d.encode(cv.getnewS(), cv.getnewKey()));
-			System.out.println("BBBBBBBBBBBBBBBBBBBBBBBB"+d.encode(cv.getnewS(), cv.getnewKey()).length());
-			writer.flush();
-			String str="";
-			//String tmp="";
-			int tmp2;
-			int flag=0;
-			while((tmp2=reader.read())!=-1){
-				if(tmp2=='完') break;
-				str+=(char)tmp2;
-			}
-			System.out.println(str);
-			tmp2=str.charAt(0);
-			if(tmp2!=5){
-				OK=0;
-				socket.close();
-				return;
-			}
-			else OK=1;
-			t4.append("收到"+tmp2+"号数据包,明文如下\n");
-			ArrayList<String> al= d.decode(str, cv.getnewKey());
-			for(int i=1;i<al.size();++i)
-			{
-				System.out.println(al.get(i));
-				t4.append(pack5[i-1]+"\n\t"+al.get(i)); 
-				
-			}
-			t4.append("\n");
-			
-			//收到信息保存在str2中
-			//writer.flush();
-			
-			tmp="";
-			tmp+=(char)((1)<<4);
-			System.out.println("tmp!!!  "+(int)tmp.charAt(0));
-			ArrayList<String> Zsen=new ArrayList<String>();
-			ArrayList<String> Zkey=new ArrayList<String>();
-			Zkey.add(Kcv);
-			Zsen.add(tmp);
-			System.out.println("tmp!!!  "+d.encode(Zsen, Zkey));
-			writer.print(d.encode(Zsen, Zkey));
-			//writer.print(s);
-			writer.flush();
-			str="";
-			//String tmp="";
-			flag=0;
-			while((tmp2=reader.read())>=0){
-				if(tmp2=='完') break;
-				str+=(char)tmp2;
-			}
-			System.out.println(str);
-			al= d.decode(str, Zkey);
-			for(String s:al){
-				filelist.addElement(s);
-				System.out.println("ADD   "+s);
-			}
-				
-			/***
-			while("dfs".equals("dfs")){
-				if(upfile==1){
+							
+							upfile=0;
+						}
+						if(download==1){
+							
+							
+							
+							
+							download=0;
+						}
+						
+					}
 					
 					
-					
-					upfile=0;
-				}
-				if(download==1){
-					
-					
-					
-					
-					download=0;
 				}
 				
-			}
-			****/
-			
+				
+				
+				writer.close();
+				reader.close();
+				socket.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					OK=0;
+					e.printStackTrace();
+				}
 		}
-		
-		
-		
-		writer.close();
-		reader.close();
-		socket.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			OK=0;
-			e.printStackTrace();
-		}
-		
 	}
 	
 	public String getTS(){
@@ -472,7 +484,7 @@ public class CLIENT {
 		
 		ClientUI(){
 			
-			JFrame jf = new JFrame("Client");
+			
 			jf.setSize(410,490);
 			jf.setResizable(false);
 			Container container=jf.getContentPane();
@@ -505,7 +517,7 @@ public class CLIENT {
 					IP=t1.getText();
 					//jf.setVisible(false);
 					method1();
-		
+					
 				}
 			});
 			
@@ -539,16 +551,10 @@ public class CLIENT {
 				return;
 			} 
 
-			
-			CLIENT cl=new CLIENT(1234,ipAS,ipTGS,ipSERVER);
-
-				cl.SendAndReceive();
-			
+			CLIENT CI=new  CLIENT(port,ipAS,ipTGS,ipSERVER);
+			CI.Cstar();
 			//OK=1;
-			if(OK==1) JOptionPane.showMessageDialog(this, "认证成功","服务",JOptionPane.INFORMATION_MESSAGE);
-			else{
-				JOptionPane.showMessageDialog(this, "认证失败","服务",JOptionPane.INFORMATION_MESSAGE);
-			}
+			
 			return;
 			
 		}	

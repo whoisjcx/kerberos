@@ -184,7 +184,7 @@ public class data {
 				ret.add(t);
 				String[] A=S.substring(1).split("³æ");
 				for(String tt:A){
-					if(tt.length()>0){
+					if(tt.length()>4){
 						ret.add(tt);
 					}
 				}

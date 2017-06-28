@@ -83,7 +83,7 @@ public class SERVER {
 
 			vc.vtoc();
 			String willsend=d.encode(vc.getnewS(),vc.getnewKey());
-			writer.println(willsend);
+			writer.print(willsend);
 			writer.flush();
 			while("dsf".equals("dsf")){
 				String str="";
@@ -105,7 +105,7 @@ public class SERVER {
 						case ((1)<<4):{
 							vtoc00100000 v = new vtoc00100000(temAL,demo.getfilename(),vc.getnewKey());
 							//System.out.println("BUGGGGGGGGG");
-							writer.println(v.getwillsend());
+							writer.print(v.getwillsend());
 							writer.flush();
 						
 						};break;
@@ -121,7 +121,7 @@ public class SERVER {
 					        String sendstr = "";
 					        while((length = fin.read(sendByte, 0, sendByte.length))>0){
 					        	sendstr=new String(sendByte,"ISO8859-1");
-					        	writer.println(v.vtoc(sendstr));
+					        	writer.print(v.vtoc(sendstr));
 					        }
 					        
 					        ArrayList<String> ALtem = new ArrayList<String>();
@@ -129,7 +129,7 @@ public class SERVER {
 							String tema = "";
 							tema += a;
 							ALtem.add(tema);
-					        writer.println(d.encode(ALtem, vc.getnewKey()));
+					        writer.print(d.encode(ALtem, vc.getnewKey()));
 					        writer.flush();
 							
 						};break;
