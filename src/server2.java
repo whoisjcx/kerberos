@@ -70,7 +70,7 @@ class vtoc00110000{
 		this.S = S;
 		filename = S.get(1);
 	}
-	public String vtoc(String str)
+	public String vtoc(String str, int length)
 	{
 		ArrayList<String> newS = new ArrayList<String>();
 		
@@ -80,6 +80,7 @@ class vtoc00110000{
 		newS.add(tema);
 		newS.add(filename);
 		newS.add(str);
+		newS.add(Integer.toString(length));
 		
 		willsend = d.encode(newS, Key);
 		
@@ -105,7 +106,8 @@ class ctov00110000{
         sendByte = new byte[1024];
        
 		sendByte =  S.get(2).getBytes("ISO8859-1");
-		fout.write(sendByte,0,sendByte.length);
+		
+		fout.write(sendByte,0,Integer.parseInt(S.get(3)));
 
     	fout.close();
 	}

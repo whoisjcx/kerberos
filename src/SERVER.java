@@ -121,20 +121,25 @@ public class SERVER {
 					        String sendstr = "";
 					        while((length = fin.read(sendByte, 0, sendByte.length))>0){
 					        	sendstr=new String(sendByte,"ISO8859-1");
-					        	writer.print(v.vtoc(sendstr));
+					        	writer.print(v.vtoc(sendstr,length));
+					        	writer.flush();
 					        }
+					        
 					        
 					        ArrayList<String> ALtem = new ArrayList<String>();
 							char a = 4<<4;
 							String tema = "";
 							tema += a;
 							ALtem.add(tema);
+							
 					        writer.print(d.encode(ALtem, vc.getnewKey()));
 					        writer.flush();
 							
 						};break;
 						case ((3)<<4):{
+							System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
 							ctov00110000 c = new ctov00110000(temAL, demo.getPath());
+							
 							demo.refresh();
 						};break;
 					}

@@ -68,6 +68,8 @@ public class data {
 				ret+=S.get(1);
 				ret+="Бъ";
 				ret+=des.Encryptions(S.get(2),Key.get(0));
+				ret+="Бъ";
+				ret+=S.get(3);
 			};break;
 			case ((4)<<4):{
 				ret+=S.get(0);
@@ -199,6 +201,7 @@ public class data {
 				String[] A=S.substring(1).split("Бъ");
 				ret.add(A[0]);
 				ret.add(des.Dectyptions(A[1], Key.get(0)));
+				ret.add(A[2]);
 				
 			};break;
 			case ((4)<<4):{

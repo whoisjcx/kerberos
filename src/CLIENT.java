@@ -38,6 +38,7 @@ public class CLIENT {
 
 	static int port=1234;
 	static int OK=0;
+	static JList list1 = new JList();// 定义列表框
 	static String ipAS="127.0.0.1";
 	static int upfile=0;
 	static int download=0;
@@ -326,6 +327,7 @@ public class CLIENT {
 					        	System.out.println(sendstr);
 					        	temALFILE = ALFILE;
 					        	temALFILE.add(sendstr);
+					        	temALFILE.add(Integer.toString(length));
 					        	writer.print(d.encode(temALFILE, Zkey));
 								//writer.print(s);
 								writer.flush();
@@ -344,7 +346,7 @@ public class CLIENT {
 							//writer.print(s);
 							writer.flush();
 					        str="";
-							while((tmp2=reader.read())>=0){
+							while((tmp2=reader.read())!=-100){
 								if(tmp2=='完') break;
 								str+=(char)tmp2;
 							}
@@ -352,11 +354,25 @@ public class CLIENT {
 							//al=new ArrayList<String>();
 							al= d.decode(str, Zkey);
 							System.out.println("ALLLLL   "+al);
-							filelist.removeAllElements();
+							//list1.clearSelection();
+							//filelist.removeAllElements();
 							
+							int flagsj=0;
 							for(String s:al){
+								flagsj=1;
 								if (s.length()<4) continue;
-								filelist.addElement(s);
+								//for(String tt:list1)
+								{
+									for(int j=0; j <filelist.size();++j)
+									{
+										if(s.equals(filelist.getElementAt(j)))
+										{
+											flagsj=0;
+										}
+									}
+								}
+								if(flagsj == 1)
+									filelist.addElement(s);
 								System.out.println("ADD   "+s+"  size"+s.length());
 							}
 							
@@ -376,10 +392,11 @@ public class CLIENT {
 							writer.print(d.encode(al, Zkey));
 							writer.flush();
 							
-							str="";
+							
 							char b = 4<<4;
 							while(true)
 							{
+								str="";
 								while((tmp2=reader.read())>=0){
 									if(tmp2=='完') break;
 										str+=(char)tmp2;
@@ -387,14 +404,13 @@ public class CLIENT {
 								
 								al = d.decode(str, Zkey);
 								
-								if(al.get(0).equals(b))
-								{
+								if(al.get(0).charAt(0)==b){
 									break;
 								}
 							
 								ctov00110000 cv3 = new ctov00110000(al, downfile);
 							}
-							
+							System.out.println("FFFFFFFFFFFFFFFF");
 							
 							DO0();
 						}
@@ -527,7 +543,7 @@ public class CLIENT {
 				JPanel p1 = new JPanel();
 				JPanel p2 = new JPanel();		
 				JLabel l1 = new JLabel("上传文件路径");
-				JList list1 = new JList();// 定义列表框
+				
 				//Vector<String> filelist = new Vector<String>();
 				//DefaultListModel filelist=new DefaultListModel();
 				JLabel no1 = new JLabel("                                                                           ");
@@ -551,7 +567,7 @@ public class CLIENT {
 					GridLayout g = new GridLayout(1,2,10,10);
 					container.setLayout(g);
 					//this.list1 = new JList(filelist);
-					this.list1.setModel(filelist);
+					list1.setModel(filelist);
 					list1.addListSelectionListener(new ListSelectionListener(){
 			        	public void valueChanged(ListSelectionEvent e){
 			        		do_user_valueChanged(e);
@@ -596,7 +612,7 @@ public class CLIENT {
 					p1.add(no8);
 				
 					//tt1.setText("Listening......\n\n");	
-					container.add(this.list1);
+					container.add(list1);
 					container.add(p1);
 					container.add(p2);
 					
