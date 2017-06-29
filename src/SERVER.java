@@ -109,6 +109,7 @@ public class SERVER {
 					{
 						demo.addmessage(vc.getS().get(2), temAL.get(i));
 					}
+					System.out.println(vc.getS().get(2));
 					
 					System.out.println(temAL);
 					switch(temAL.get(0).charAt(0)){
