@@ -523,7 +523,7 @@ public class CLIENT {
 	static class ClientUI extends JFrame{
 
 		JButton bt1=new JButton("请求认证");	
-		JButton bt2=new JButton("进入服务");
+		JButton bt2=new JButton("进入网盘");
 		
 		JTextField t1=new JTextField(30);
 		JTextField t2=new JTextField(30);
@@ -531,7 +531,7 @@ public class CLIENT {
 		JTextField t5=new JTextField(30);
 		JLabel l1=new JLabel("用户名    ");
 		JLabel l5=new JLabel("用户KEY  ");
-		
+		JLabel l6=new JLabel("                                       ");
 		JLabel l2=new JLabel("服务器名");
 		JLabel l3=new JLabel("服务器IP ");
 		JPanel p1=new JPanel();
@@ -654,6 +654,7 @@ public class CLIENT {
 			p3.add(t5);
 			p2.setLayout(fright);
 			p2.add(bt1);
+			p2.add(l6);
 			p2.add(bt2);
 			p3.add(l2);
 			p3.add(t2);
@@ -707,9 +708,7 @@ public class CLIENT {
 			CLIENT CI=new  CLIENT(port,ipAS,ipTGS,ipSERVER);
 			CI.Cstar();
 			//OK=1;
-			
 			return;
-			
 		}	
 		
 		int method2()
