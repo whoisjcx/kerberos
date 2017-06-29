@@ -1,7 +1,11 @@
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.TextArea;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -249,7 +254,7 @@ public class TGS {
 				JPanel p1 = new JPanel();
 				JPanel p2 = new JPanel();		
 				JLabel l1 = new JLabel("事件");
-				JLabel l2 = new JLabel("包from->to");
+				JLabel l2 = new JLabel("包的情况");
 				JButton b1 = new JButton("清屏");
 				JButton b2 = new JButton("清屏");
 				MyFramePanel2(){
@@ -265,6 +270,28 @@ public class TGS {
 					p2.add(t2);
 					p1.add(b1);
 					p2.add(b2);
+					
+					b1.setFont(new Font("宋体",Font.PLAIN,15));
+					b1.setForeground(Color.BLUE);
+					b1.setBackground(Color.PINK);
+					b1.setBorderPainted(false);
+					b2.setFont(new Font("宋体",Font.PLAIN,15));
+					b2.setForeground(Color.BLUE);
+					b2.setBackground(Color.PINK);
+					b2.setBorderPainted(false);
+					l1.setFont(new Font("宋体",Font.PLAIN,15));
+					l2.setFont(new Font("宋体",Font.PLAIN,15));
+					
+					b1.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							t1.setText("Listening......");
+						}
+					});
+					b2.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							t2.setText("");
+						}
+					});
 				
 					t1.setText("Listening......\n\n");	
 					container.add(p1);
@@ -273,6 +300,22 @@ public class TGS {
 					this.setTitle("TGS服务器");
 					this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					this.setVisible(true);
+					
+					setLocation(200, 50);  
+			        //背景图片的路径。（相对路径或者绝对路径。本例图片放于"java项目名"的文件下）  
+			        String path = "background.jpg";  			   
+			        ImageIcon background = new ImageIcon(path);  			        
+			        JLabel label = new JLabel(background);  			       
+			        label.setBounds(0, 0, this.getWidth(), this.getHeight());  			        
+			        JPanel imagePanel = (JPanel) this.getContentPane();  
+			        imagePanel.setOpaque(false);  
+			        			      			       
+			        this.getLayeredPane().add(label, new Integer(Integer.MIN_VALUE));  
+			      
+			        p1.setOpaque(false);
+					p2.setOpaque(false);
+					
+			        setVisible(true); 
 				} 								
 		}
 	
