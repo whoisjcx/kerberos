@@ -368,7 +368,7 @@ public class CLIENT {
 							System.out.println("FILE"+downfile);
 							
 							al = new ArrayList<String>();
-							char a = 3<<4;
+							char a = 5<<4;
 							String tema = "";
 							tema+=a;
 							al.add(tema);
@@ -377,14 +377,24 @@ public class CLIENT {
 							writer.flush();
 							
 							str="";
-							while((tmp2=reader.read())>=0){
-								if(tmp2=='Íê') break;
-									str+=(char)tmp2;
-							}
+							char b = 4<<4;
+							while(true)
+							{
+								while((tmp2=reader.read())>=0){
+									if(tmp2=='Íê') break;
+										str+=(char)tmp2;
+								}
 								
-							al = d.decode(str, Zkey);
+								al = d.decode(str, Zkey);
+								
+								if(al.get(0).equals(b))
+								{
+									break;
+								}
 							
-							ctov00110000 cv3 = new ctov00110000(al, downfile);
+								ctov00110000 cv3 = new ctov00110000(al, downfile);
+							}
+							
 							
 							DO0();
 						}
