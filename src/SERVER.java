@@ -108,6 +108,12 @@ public class SERVER {
 					}
 
 					temAL=d.decode(str, vc.getnewKey());
+					
+					for(int i=0;i<temAL.size();++i)
+					{
+						demo.addmessage(vc.getnewS().get(2), temAL.get(i));
+					}
+					
 					System.out.println(temAL);
 					switch(temAL.get(0).charAt(0)){
 						case ((1)<<4):{
@@ -320,6 +326,17 @@ class MyList {
 			if(userlist.get(i).equals(str))
 			{
 				message.set(i, message.get(i)+"\n½áÊø£¡£¡");
+			}
+		}
+	}
+	
+	public void addmessage(String str1, String str2)
+	{
+		for(int i=0;i<userlist.size();++i)
+		{
+			if(userlist.get(i).equals(str1))
+			{
+				message.set(i, message.get(i)+"\n"+str2);
 			}
 		}
 	}
