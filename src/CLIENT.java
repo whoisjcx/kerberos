@@ -199,12 +199,13 @@ public class CLIENT {
 					else OK=1;
 					t4.append("收到"+tmp2+"号数据包,明文如下\n");
 					res=d.decode(str2, key);
-					Kcv=res.get(1);
+					
 					if(res==null){
 						OK=0;
 						socket.close();
 						return;
 					}
+					Kcv=res.get(1);
 					System.out.println(str2);
 					res=d.decode(str2,key);
 					System.out.println("key----:"+key.get(0));
@@ -303,6 +304,44 @@ public class CLIENT {
 							String[] TMP=upname.split("\\\\");
 							String NAME=TMP[TMP.length-1];
 							System.out.println("NAME   "+NAME);
+							
+							FileInputStream fin=null;
+							fin = new FileInputStream(new File(upname));
+					        byte[] sendByte = null;
+					        sendByte = new byte[1024];
+					        int length=0;
+					        String sendstr="";
+					        ArrayList<String> ALFILE = new ArrayList<String>();
+					        
+					        char a = 3<<4;
+							String tema = "";
+							tema+=a;
+							ALFILE.add(tema);
+							ALFILE.add(NAME);
+							ArrayList<String> temALFILE = new ArrayList<String>();
+							
+					        while((length = fin.read(sendByte, 0, sendByte.length))>0){
+					        	sendstr = new String(sendByte,"ISO8859-1");
+					        	temALFILE = ALFILE;
+					        	temALFILE.add(sendstr);
+					        	writer.print(d.encode(temALFILE, Zkey));
+								//writer.print(s);
+								writer.flush();
+					        }
+					        
+							while((tmp2=reader.read())>=0){
+								if(tmp2=='完') break;
+								str+=(char)tmp2;
+							}
+							System.out.println(str);
+							al= d.decode(str, Zkey);
+							System.out.println("ALLLLL   "+(int)str.charAt(0));
+							filelist.clear();
+							for(String s:al){
+								if (s.length()<4) continue;
+								filelist.addElement(s);
+								System.out.println("ADD   "+s+"  size"+s.length());
+							}
 							
 							UP0();
 						}
