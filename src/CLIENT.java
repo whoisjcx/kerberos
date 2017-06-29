@@ -367,7 +367,24 @@ public class CLIENT {
 							System.out.println("NAME"+downname);
 							System.out.println("FILE"+downfile);
 							
+							al = new ArrayList<String>();
+							char a = 3<<4;
+							String tema = "";
+							tema+=a;
+							al.add(tema);
+							al.add(downname);
+							writer.print(d.encode(al, Zkey));
+							writer.flush();
 							
+							str="";
+							while((tmp2=reader.read())>=0){
+								if(tmp2=='Íê') break;
+									str+=(char)tmp2;
+							}
+								
+							al = d.decode(str, Zkey);
+							
+							ctov00110000 cv3 = new ctov00110000(al, downfile);
 							
 							DO0();
 						}
