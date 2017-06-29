@@ -126,7 +126,7 @@ public class SERVER {
 							FileInputStream fin=null;
 							fin = new FileInputStream(new File(filename));
 					        byte[] sendByte = null;
-					        sendByte = new byte[1024];
+					        sendByte = new byte[1024*10];
 					        int length = 0;
 					        String sendstr = "";
 					        while((length = fin.read(sendByte, 0, sendByte.length))>0){
