@@ -35,7 +35,7 @@ public class SERVER {
 		private Socket socket=null;  
 		private BufferedReader reader;
 		private PrintWriter writer;
-		private String Ktgsv="00000000";	
+		private String Ktgsv="12345678";	
 		
 		private ArrayList<String> key=new ArrayList<String>();	 
 		data d=new data();
@@ -209,7 +209,7 @@ public class SERVER {
 	
 	public void Serverstart()
 	{
-        demo.setPath("C:\\Users\\Administrator.USER-20151226PH\\Desktop\\test");
+        demo.setPath("C:\\Users\\75608_000\\Desktop\\test");
         demo.refresh();
 		new ListenThread().start();
 	}
@@ -322,11 +322,16 @@ class MyList {
 	
 	public void enddelete(String str)
 	{
+		list1.clearSelection();
 		for(int i=0;i<userlist.size();++i)
 		{
 			if(userlist.get(i).equals(str))
 			{
 				message.set(i, message.get(i)+"\n½áÊø£¡£¡");
+				//list1.remove(i);
+				message.remove(i);
+				userlist.remove(i);
+				list1.repaint();
 			}
 		}
 	}
