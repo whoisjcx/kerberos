@@ -17,7 +17,7 @@ import java.awt.event.*;
 
 public class AS {
 	
-	private String ID;	//ID号
+	private String ID="IDas1234";	//ID号
 	private String IP;	//IP地址
 	private int port=1234;	//监听端口
 	private String IDtgs="IDtgs123";	//tgs的ID
@@ -52,7 +52,6 @@ public class AS {
 				String str="";
 				String tmp="";
 				int tmp2;
-				int flag=0;
 				while((tmp2=reader.read())!=-1){
 					if(tmp2=='完')break;
 					str+=(char)tmp2;
@@ -221,7 +220,6 @@ public class AS {
 	
 	
 	public static void main(String args[]){
-		String s="";
 		AS as=new AS();
 		as.ASstart();
 		MyFramePanel frame = new MyFramePanel();
