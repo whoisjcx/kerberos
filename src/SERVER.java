@@ -12,7 +12,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -53,6 +52,7 @@ public class SERVER {
 			}
 		}
 		
+		@SuppressWarnings({ "resource", "unused" })
 		@Override
 		public void run(){
 			//String ip=socket.getInetAddress().getHostAddress();
@@ -62,9 +62,7 @@ public class SERVER {
 				reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
 				writer=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"),true);
 				String str="";
-				String tmp="";
 				int tmp2;
-				int flag=0;
 				while((tmp2=reader.read())!=-1){
 					if(tmp2=='完') break;
 					str+=(char)tmp2;
@@ -95,9 +93,7 @@ public class SERVER {
 			writer.flush();
 			while("dsf".equals("dsf")){
 				String str="";
-				String tmp="";
 				int tmp2;
-				int flag=0;
 
 				ArrayList<String> temAL = new ArrayList<String>();
 				try {
@@ -217,7 +213,6 @@ public class SERVER {
 	}
 	
 	public static void main(String args[]){
-		String s="";
 		SERVER se=new SERVER();
 		se.Serverstart();
 	}
@@ -280,7 +275,8 @@ class MyList {
 	
     private JFrame frame = new JFrame("Server");
     private Container container = frame.getContentPane();
-    private JList list1 = new JList();// 定义列表框
+    @SuppressWarnings("rawtypes")
+	private JList list1 = new JList();// 定义列表框
     
     TextArea text2=new TextArea(19,25);
     TextArea text3=new TextArea(19,25);
@@ -300,16 +296,19 @@ class MyList {
 	JPanel jp2 = new JPanel();
 	JPanel jp3 = new JPanel();	
     
+	@SuppressWarnings("rawtypes")
 	DefaultListModel userlist=new DefaultListModel();
 	//DefaultListModel message=new DefaultListModel();
 	//Vector<String> userlist = new Vector<String>();
 	Vector<String> filelist = new Vector<String>();
 	Vector<String> message = new Vector<String>();
 	
+	@SuppressWarnings("unchecked")
 	public void beginadd(String user,String messa){
 		userlist.addElement(user);
 		message.add(messa);
 	}
+	@SuppressWarnings("rawtypes")
 	public DefaultListModel getuserlist()
 	{
 		return userlist;
@@ -364,7 +363,8 @@ class MyList {
 		totext2(Path);
 	}
  
-    public MyList() {
+    @SuppressWarnings("unchecked")
+	public MyList() {
     	
         this.frame.setLayout(new GridLayout(1, 2));   
         this.list1.setModel(userlist);
