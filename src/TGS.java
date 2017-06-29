@@ -28,10 +28,9 @@ import javax.swing.JPanel;
 
 public class TGS {
 	
-	private String ID;	//ID号
+	private String ID="IDtgs123";	//ID号
 	private String IP;	//IP地址
 	private int port=2345;	//监听端口
-	private String IDtgs="IDtgs123";	//tgs的ID
 	private String lifetime="00005000";
 	private String Kastgs="12345678";
 	private String[] pack2={"IDv:","Kc-tgs:","IDc:","IPc:","IDtgs:","time:","lifetime:","IDc:","Addrc:","time:"};
@@ -66,7 +65,6 @@ public class TGS {
 				String str="";
 				String tmp="";
 				int tmp2;
-				int flag=0;
 				System.out.println("Connected");
 				while((tmp2=reader.read())!=-1){
 					if(tmp2=='完') break;
@@ -242,17 +240,6 @@ public class TGS {
 		TGS tgs=new TGS();
 		tgs.TGSstart();
 		MyFramePanel2 frame = new MyFramePanel2();
-		
-		/***
-		try {
-			mysql sql=new mysql();
-			System.out.println(sql.select("IDV12345"));
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		***/
-		
 	}
 	
 	static TextArea t1= new TextArea(19,39);
