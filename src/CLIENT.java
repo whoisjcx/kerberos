@@ -592,7 +592,7 @@ public class CLIENT {
 			        	}
 			        });
 					
-					b1.setBounds(0, 0, 90, 50);
+					b1.setBounds(0, 0, 120, 90);
 			         ImageIcon icon1 = new ImageIcon("3.png"); 
 			         Image temp1 = icon1.getImage().getScaledInstance(b1.getWidth(),  
 			                 b1.getHeight(), icon1.getImage().SCALE_DEFAULT);  
@@ -601,7 +601,7 @@ public class CLIENT {
 			        b1.setContentAreaFilled(false);//不绘制按钮区域
 					b1.setBorderPainted(false);//不绘制边框
 			        
-			        b2.setBounds(0, 0, 90, 50);
+			        b2.setBounds(0, 0, 120, 90);
 			         ImageIcon icon2 = new ImageIcon("4.png"); 
 			         Image temp2 = icon2.getImage().getScaledInstance(b2.getWidth(),  
 			                 b2.getHeight(), icon2.getImage().SCALE_DEFAULT);  
@@ -685,8 +685,8 @@ public class CLIENT {
 					//p1.add(no3);
 					//p1.add(no4);
 					p1.add(no5);
-					p1.add(l3);
-					p1.add(t2);
+					//p1.add(l3);
+					//p1.add(t2);
 					p1.add(b2);
 					p1.add(no8);
 				

@@ -35,7 +35,7 @@ public class SERVER {
 		private Socket socket=null;  
 		private BufferedReader reader;
 		private PrintWriter writer;
-		private String Ktgsv="12345678";	
+		private String Ktgsv="00000000";	
 		
 		private ArrayList<String> key=new ArrayList<String>();	 
 		data d=new data();
@@ -107,7 +107,7 @@ public class SERVER {
 					
 					for(int i=0;i<temAL.size();++i)
 					{
-						demo.addmessage(vc.getnewS().get(2), temAL.get(i));
+						demo.addmessage(vc.getS().get(2), temAL.get(i));
 					}
 					
 					System.out.println(temAL);
@@ -158,7 +158,7 @@ public class SERVER {
 					// TODO Auto-generated catch block
 					
 					e1.printStackTrace();
-					demo.enddelete(vc.getnewS().get(2));
+					demo.enddelete(vc.getS().get(2));
 					return;
 				}
 			}
@@ -207,7 +207,7 @@ public class SERVER {
 	
 	public void Serverstart()
 	{
-        demo.setPath("C:\\Users\\75608_000\\Desktop\\test");
+        demo.setPath("C:\\Users\\Administrator.USER-20151226PH\\Desktop\\test");
         demo.refresh();
 		new ListenThread().start();
 	}
