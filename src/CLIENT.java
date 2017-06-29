@@ -530,7 +530,7 @@ public class CLIENT {
 		****/
 	}
 	static TextArea t4= new TextArea(20,53);
-	static TextArea tt2= new TextArea(19,39);
+	static TextArea tt2= new TextArea(19,27);
 	static class ClientUI extends JFrame{
 
 		JButton bt1=new JButton("请求认证");	
@@ -576,7 +576,7 @@ public class CLIENT {
 				JButton b1 = new JButton("上传");
 				JButton b2 = new JButton("下载");
 				MyFramePanel(){
-					this.setSize(600,350);
+					this.setSize(720,370);
 					setResizable(false);  					
 					Container container = this.getContentPane();
 					GridLayout g = new GridLayout(1,2,10,10);
@@ -635,7 +635,7 @@ public class CLIENT {
 					//p1.add(tt1);
 					p2.add(tt2);
 					p1.add(b1);
-					//p1.add(no7);
+					p1.add(no7);
 					//p1.add(no1);
 					
 					//p1.add(no3);
