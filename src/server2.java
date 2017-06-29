@@ -1,10 +1,7 @@
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class server2 {
@@ -41,6 +38,9 @@ class vtoc00100000{
 		data d = new data();
 		willsend = d.encode(newS, Key);
 		System.out.println(willsend);
+		
+		deco.clear();
+		totalfile.clear();
 	}
 }
 
@@ -48,6 +48,7 @@ class vtoc00110000{
 	
 	
 	private String willsend = ""; 
+	@SuppressWarnings("unused")
 	private ArrayList<String> S = new ArrayList<String>();
 	private ArrayList<String> Key = new ArrayList<String>();
 	private data d = new data();
@@ -91,6 +92,7 @@ class vtoc00110000{
 
 class ctov00110000{
 	
+	@SuppressWarnings("unused")
 	private ArrayList<String> S = new ArrayList<String>();
 	
 	String Path = "";
