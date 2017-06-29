@@ -23,7 +23,7 @@ public class AS {
 	private String IDtgs="IDtgs123";	//tgsµÄID
 	private String lifetime="00005000";
 	private String[] pack0={"IDc:","IDtgs","TS"};
-	
+	private String Kastgs="12345678";
 	class SendThread extends Thread{
 		private Socket socket=null;  
 		private BufferedReader reader;
@@ -31,7 +31,7 @@ public class AS {
 		private ArrayList<String> s=new ArrayList<String>();
 		private ArrayList<String> key=new ArrayList<String>(); 
 		private ArrayList<String> ws=new ArrayList<String>();
-		private String Kastgs="00000000";
+		
 		private String Kc="00000000";	//Êý¾Ý¿â
 		private mysql sql;
 		data d=new data();

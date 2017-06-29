@@ -33,7 +33,7 @@ public class TGS {
 	private int port=2345;	//监听端口
 	private String IDtgs="IDtgs123";	//tgs的ID
 	private String lifetime="00005000";
-	private String Kastgs="00000000";
+	private String Kastgs="12345678";
 	private String[] pack2={"IDv:","Kc-tgs:","IDc:","IPc:","IDtgs:","time:","lifetime:","IDc:","Addrc:","time:"};
 	
 	class SendThread extends Thread{
@@ -93,59 +93,67 @@ public class TGS {
 					key.add(Kastgs);
 					s=d.decode(str, key);
 					for(int i=1;i<s.size();++i){
-						System.out.println("c->tgs----i:"+s.get(i));
+						System.out.println("c->tgs----:"+i+s.get(i));
 						t2.append(pack2[i-1]+"\n\t"+s.get(i));
 						t2.append("\n");
 					}
 					t1.setText(t1.getText()+s.get(8)+"请求访问"+s.get(1)+"\n");
-					long time2=System.currentTimeMillis();
-					long time1=Long.parseLong(s.get(6));
-					time2%=100000000;
-					if(time2-time1>5000){
+					if(!s.get(8).equals(s.get(3))){
 						ws.clear();
 						tmp2=1<<7;
 						tmp+=(char)tmp2;
 						ws.add(tmp);
 						willsend=d.encode(ws, null);
-						t1.append("验证超时，错误");
+						t1.append("仿冒用户，错误");
 					}
 					else{
-
-						Ktgsv=sql.select(s.get(1));
-						if(Ktgsv==null){
+						long time2=System.currentTimeMillis();
+						long time1=Long.parseLong(s.get(6));
+						time2%=100000000;
+						if(time2-time1>5000){
 							ws.clear();
 							tmp2=1<<7;
 							tmp+=(char)tmp2;
 							ws.add(tmp);
 							willsend=d.encode(ws, null);
-							t1.append("无此服务器，拒绝数据包");
+							t1.append("验证超时，错误");
 						}
 						else{
-							ws.clear();
-							tmp+=(char)3;
-							ws.add(tmp);
-							ws.add(randomkey());
-							IDv=s.get(1);
-							ws.add(IDv);
-							ws.add(getTS());
-							ws.add(ws.get(1));
-							ws.add(s.get(8));
-							ws.add(s.get(9));
-							ws.add(s.get(1));
-							ws.add(ws.get(3));
-							ws.add(lifetime);
-							key.clear();
-							key.add(Ktgsv);
-							key.add(s.get(2));
-							willsend=d.encode(ws, key);
-							t1.append("认证票据包");
+
+							Ktgsv=sql.select(s.get(1));
+							if(Ktgsv==null){
+								ws.clear();
+								tmp2=1<<7;
+								tmp+=(char)tmp2;
+								ws.add(tmp);
+								willsend=d.encode(ws, null);
+								t1.append("无此服务器，拒绝数据包");
+							}
+							else{
+								ws.clear();
+								tmp+=(char)3;
+								ws.add(tmp);
+								ws.add(randomkey());
+								IDv=s.get(1);
+								ws.add(IDv);
+								ws.add(getTS());
+								ws.add(ws.get(1));
+								ws.add(s.get(8));
+								ws.add(s.get(9));
+								ws.add(s.get(1));
+								ws.add(ws.get(3));
+								ws.add(lifetime);
+								key.clear();
+								key.add(Ktgsv);
+								key.add(s.get(2));
+								willsend=d.encode(ws, key);
+								t1.append("认证票据包");
+							}
+							for(int i=0;i<ws.size();++i){
+								System.out.println(i+":"+ws.get(i));
+							}
 						}
-						for(int i=0;i<ws.size();++i){
-							System.out.println(i+":"+ws.get(i));
-						}
-						
 					}
-					
 				}
 				
 			} catch (IOException e) {
@@ -162,7 +170,6 @@ public class TGS {
 			writer.print(willsend);
 			t1.setText(t1.getText()+"已发送！\n\n");
 			writer.flush();
-			
 			writer.close();
 			try {
 				reader.close();
