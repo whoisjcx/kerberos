@@ -1,7 +1,9 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +23,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -65,7 +68,6 @@ public class CLIENT {
 		ipAS=cipAS;
 		ipTGS=cipTGS;
 		ipSERVER=cipSERVER;
-		key.add(Kas);
 	}
 	void Cstar(){
 		new SendAndReceive ().start();
@@ -110,6 +112,8 @@ public class CLIENT {
 					res.add(IDc);
 					res.add(IDtgs);
 					res.add(getTS());
+					key.clear();
+					key.add(Kas);
 					willsend=d.encode(res, key);
 					System.out.println(willsend);
 					writer.print(willsend);
@@ -584,6 +588,26 @@ public class CLIENT {
 			        		do_user_valueChanged(e);
 			        	}
 			        });
+					
+					b1.setBounds(0, 0, 90, 50);
+			         ImageIcon icon1 = new ImageIcon("3.png"); 
+			         Image temp1 = icon1.getImage().getScaledInstance(b1.getWidth(),  
+			                 b1.getHeight(), icon1.getImage().SCALE_DEFAULT);  
+			         icon1 = new ImageIcon(temp1);
+			        b1.setIcon(icon1);
+			        b1.setContentAreaFilled(false);//不绘制按钮区域
+					b1.setBorderPainted(false);//不绘制边框
+			        
+			        b2.setBounds(0, 0, 90, 50);
+			         ImageIcon icon2 = new ImageIcon("4.png"); 
+			         Image temp2 = icon2.getImage().getScaledInstance(b2.getWidth(),  
+			                 b2.getHeight(), icon2.getImage().SCALE_DEFAULT);  
+			         icon2 = new ImageIcon(temp2);
+			        b2.setIcon(icon2);
+			        b2.setContentAreaFilled(false);//不绘制按钮区域
+					b2.setBorderPainted(false);//不绘制边框
+					
+					
 					b1.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){
 							upname=t1.getText();
@@ -602,7 +626,7 @@ public class CLIENT {
 					});
 					list1.setBorder(BorderFactory.createTitledBorder("文件列表"));
 			        list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			        p1.add(no2);
+			        //p1.add(no2);
 			        p1.add(no6);
 			        p1.add(l1);
 					p1.add(t1);
@@ -611,11 +635,11 @@ public class CLIENT {
 					//p1.add(tt1);
 					p2.add(tt2);
 					p1.add(b1);
-					p1.add(no7);
+					//p1.add(no7);
 					//p1.add(no1);
 					
 					//p1.add(no3);
-					p1.add(no4);
+					//p1.add(no4);
 					p1.add(no5);
 					p1.add(l3);
 					p1.add(t2);
@@ -642,7 +666,8 @@ public class CLIENT {
 		
 		ClientUI(){
 			
-			
+			jf.getContentPane().setBackground(Color.getHSBColor(22, 22, 22));
+			jf.setLocation(100, 100);
 			jf.setSize(410,520);
 			jf.setResizable(false);
 			Container container=jf.getContentPane();
@@ -668,10 +693,18 @@ public class CLIENT {
 			p3.add(l3);
 			p3.add(t3);
 			p3.add(t4);
+			p1.setBackground(Color.getHSBColor(22, 22, 22));
+			p2.setBackground(Color.getHSBColor(22, 22, 22));
+			p3.setBackground(Color.getHSBColor(22, 22, 22));
 			//container.add(p1, BorderLayout.NORTH);
 			container.add(p3, BorderLayout.CENTER);
 			container.add(p2, BorderLayout.SOUTH);
-			
+			bt1.setBackground(Color.pink);
+			bt2.setBackground(Color.pink);
+			//bt1.setContentAreaFilled(false);//不绘制按钮区域
+			bt1.setBorderPainted(false);//不绘制边框
+			//bt2.setContentAreaFilled(false);//不绘制按钮区域
+			bt2.setBorderPainted(false);//不绘制边框
 			bt1.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){	
 					IP=t1.getText();
