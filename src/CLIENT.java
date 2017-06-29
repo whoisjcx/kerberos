@@ -130,7 +130,6 @@ public class CLIENT {
 					tmp2=str1.charAt(0);
 					if(tmp2!=1){
 						OK=0;
-						JOptionPane.showMessageDialog( jf,"认证失败","服务",JOptionPane.INFORMATION_MESSAGE);
 						socket.close();
 						return;
 					}
@@ -139,7 +138,6 @@ public class CLIENT {
 					res=d.decode(str1, key);
 					if(res==null){
 						OK=0;
-						JOptionPane.showMessageDialog( jf,"认证失败","服务",JOptionPane.INFORMATION_MESSAGE);
 						socket.close();
 						return;
 					}
@@ -202,7 +200,6 @@ public class CLIENT {
 					tmp2=str2.charAt(0);
 					if(tmp2!=3){
 						OK=0;
-						JOptionPane.showMessageDialog( jf,"认证失败","服务",JOptionPane.INFORMATION_MESSAGE);
 						socket.close();
 						return;
 					}
@@ -212,7 +209,6 @@ public class CLIENT {
 					
 					if(res==null){
 						OK=0;
-						JOptionPane.showMessageDialog( jf,"认证失败","服务",JOptionPane.INFORMATION_MESSAGE);
 						socket.close();
 						return;
 					}
@@ -417,13 +413,14 @@ public class CLIENT {
 								
 								
 								al = d.decode(str, Zkey);
-								tt2.append("收到"+(int)str.charAt(0)+"号包,正在下载"+al.get(1)+"文件");
+								
 								
 								if(al.get(0).charAt(0)==b){
-									JOptionPane.showMessageDialog(null, "下载完成！","完成",JOptionPane.INFORMATION_MESSAGE);
+									tt2.append("收到"+(int)str.charAt(0)+"号包,文件完成\n");
+									JOptionPane.showMessageDialog(jf, "下载完成！","完成",JOptionPane.INFORMATION_MESSAGE);
 									break;
 								}
-							
+								tt2.append("收到"+(int)str.charAt(0)+"号包,正在下载"+al.get(1)+"文件\n");
 								ctov00110000 cv3 = new ctov00110000(al, downfile);
 							}
 							System.out.println("FFFFFFFFFFFFFFFF");
@@ -618,7 +615,7 @@ public class CLIENT {
 						public void actionPerformed(ActionEvent e){
 							
 							JFileChooser chooser = new JFileChooser();             //设置选择器  
-							 chooser.setMultiSelectionEnabled(true);             //设为多选  
+							chooser.setMultiSelectionEnabled(true);             //设为多选  
 							int returnVal = chooser.showOpenDialog(b1);        //是否打开文件选择框  
 							System.out.println("returnVal="+returnVal);  
 							  
@@ -644,10 +641,31 @@ public class CLIENT {
 						}
 					});
 					b2.addActionListener(new ActionListener(){
-						public void actionPerformed(ActionEvent e){	
-							downfile=t2.getText();
+						public void actionPerformed(ActionEvent e){
+							
+							JFileChooser chooser = new JFileChooser();             //设置选择器  
+							chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+							chooser.setMultiSelectionEnabled(true);             //设为多选  
+							int returnVal = chooser.showOpenDialog(b1);        //是否打开文件选择框  
+							System.out.println("returnVal="+returnVal);  
+							  
+							if (returnVal == JFileChooser.APPROVE_OPTION) {          //如果符合文件类型  
+							  
+							String filepath = chooser.getSelectedFile().getAbsolutePath();      //获取绝对路径  
+							System.out.println(filepath);  
+							  
+							  
+							System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());  //输出相对路径  
+							  
+							//upname=filepath;
+							//System.out.println("??????????????????????????");
+							//upfile=1;
+
+							
+							downfile=filepath;
 							//download=1;
 							DO1();
+							}
 						}
 					});
 					list1.setBorder(BorderFactory.createTitledBorder("文件列表"));
