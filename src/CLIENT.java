@@ -25,6 +25,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -575,6 +576,7 @@ public class CLIENT {
 				JLabel l2 = new JLabel("数据包情况");
 				JButton b1 = new JButton("上传");
 				JButton b2 = new JButton("下载");
+				
 				MyFramePanel(){
 					this.setSize(720,370);
 					setResizable(false);  					
@@ -610,11 +612,31 @@ public class CLIENT {
 					
 					b1.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){
-							upname=t1.getText();
+							
+							JFileChooser chooser = new JFileChooser();             //设置选择器  
+							 chooser.setMultiSelectionEnabled(true);             //设为多选  
+							int returnVal = chooser.showOpenDialog(b1);        //是否打开文件选择框  
+							System.out.println("returnVal="+returnVal);  
+							  
+							if (returnVal == JFileChooser.APPROVE_OPTION) {          //如果符合文件类型  
+							  
+							String filepath = chooser.getSelectedFile().getAbsolutePath();      //获取绝对路径  
+							System.out.println(filepath);  
+							  
+							  
+							System.out.println("You chose to open this file: "+ chooser.getSelectedFile().getName());  //输出相对路径  
+							  
+							upname=filepath;
 							System.out.println("??????????????????????????");
 							//upfile=1;
 							UP1();
 							System.out.println(upfile);
+							
+							
+							}  
+							
+							
+							
 						}
 					});
 					b2.addActionListener(new ActionListener(){
@@ -628,8 +650,8 @@ public class CLIENT {
 			        list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			        //p1.add(no2);
 			        p1.add(no6);
-			        p1.add(l1);
-					p1.add(t1);
+			        //p1.add(l1);
+					//p1.add(t1);
 					p2.add(l2);
 					//p1.add(list1);
 					//p1.add(tt1);
