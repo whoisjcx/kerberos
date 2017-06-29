@@ -67,7 +67,7 @@ public class data {
 				ret+=S.get(0);
 				ret+=S.get(1);
 				ret+="Бъ";
-				ret+=des.Encryptions(S.get(1),Key.get(0));
+				ret+=des.Encryptions(S.get(2),Key.get(0));
 			};break;
 			case ((4)<<4):{
 				ret+=S.get(0);
@@ -186,6 +186,7 @@ public class data {
 				for(String tt:A){
 					if(tt.length()>4){
 						ret.add(tt);
+						
 					}
 				}
 				

@@ -104,7 +104,7 @@ public class SERVER {
 					switch(temAL.get(0).charAt(0)){
 						case ((1)<<4):{
 							vtoc00100000 v = new vtoc00100000(temAL,demo.getfilename(),vc.getnewKey());
-							//System.out.println("BUGGGGGGGGG");
+							System.out.println("SEND"+v.getwillsend());
 							writer.print(v.getwillsend());
 							writer.flush();
 						

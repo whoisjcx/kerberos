@@ -287,18 +287,19 @@ public class CLIENT {
 						if(tmp2=='完') break;
 						str+=(char)tmp2;
 					}
-					System.out.println(str);
+					//System.out.println(str);
 					al= d.decode(str, Zkey);
 					System.out.println("ALLLLL   "+(int)str.charAt(0));
 					for(String s:al){
 						if (s.length()<4) continue;
 						filelist.addElement(s);
-						System.out.println("ADD   "+s+"  size"+s.length());
+						//System.out.println("ADD   "+s+"  size"+s.length());
 					}
 				
 					while("dsf".equals("dsf")){
 
 						if(UP()!=0){
+							System.out.println("这是一次UP操作");
 							System.out.println(upfile);
 							System.out.println("FXX");
 							String[] TMP=upname.split("\\\\");
@@ -322,21 +323,37 @@ public class CLIENT {
 							
 					        while((length = fin.read(sendByte, 0, sendByte.length))>0){
 					        	sendstr = new String(sendByte,"ISO8859-1");
+					        	System.out.println(sendstr);
 					        	temALFILE = ALFILE;
 					        	temALFILE.add(sendstr);
 					        	writer.print(d.encode(temALFILE, Zkey));
 								//writer.print(s);
 								writer.flush();
 					        }
+					        fin.close();
 					        
+							tmp="";
+							tmp+=(char)((1)<<4);
+							System.out.println("tmp!!!  "+(int)tmp.charAt(0));
+							Zsen=new ArrayList<String>();
+							Zkey=new ArrayList<String>();
+							Zkey.add(Kcv);
+							Zsen.add(tmp);
+							System.out.println("tmp!!!  "+d.encode(Zsen, Zkey));
+							writer.print(d.encode(Zsen, Zkey));
+							//writer.print(s);
+							writer.flush();
+					        str="";
 							while((tmp2=reader.read())>=0){
 								if(tmp2=='完') break;
 								str+=(char)tmp2;
 							}
 							System.out.println(str);
+							//al=new ArrayList<String>();
 							al= d.decode(str, Zkey);
-							System.out.println("ALLLLL   "+(int)str.charAt(0));
-							filelist.clear();
+							System.out.println("ALLLLL   "+al);
+							filelist.removeAllElements();
+							
 							for(String s:al){
 								if (s.length()<4) continue;
 								filelist.addElement(s);

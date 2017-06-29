@@ -33,6 +33,7 @@ class vtoc00100000{
 		char a = 2<<4;
 		String tema = "";
 		tema+=a;
+		//newS = new ArrayList<String>();
 		newS.add(tema);
 		newS.addAll(filename);
 
@@ -95,7 +96,7 @@ class ctov00110000{
 	
 	public ctov00110000(ArrayList<String> S, String path) throws IOException{
 		this.S = S;
-		Path = path + S.get(1);
+		Path = path + "\\" + S.get(1);
 		
 		FileOutputStream fout = null;
         fout = new FileOutputStream(new File(Path),true);
