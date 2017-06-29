@@ -290,6 +290,7 @@ public class CLIENT {
 						str+=(char)tmp2;
 					}
 					//System.out.println(str);
+					tt2.append("收到"+(int)str.charAt(0)+"号包,内容为文件列表\n");
 					al= d.decode(str, Zkey);
 					System.out.println("ALLLLL   "+(int)str.charAt(0));
 					for(String s:al){
@@ -333,6 +334,7 @@ public class CLIENT {
 								//writer.print(s);
 								writer.flush();
 					        }
+					        JOptionPane.showMessageDialog(null, "上传完成!","完成",JOptionPane.INFORMATION_MESSAGE);
 					        fin.close();
 					        
 							tmp="";
@@ -351,6 +353,7 @@ public class CLIENT {
 								if(tmp2=='完') break;
 								str+=(char)tmp2;
 							}
+							tt2.append("收到"+(int)str.charAt(0)+"号包,内容为文件列表");
 							System.out.println(str);
 							//al=new ArrayList<String>();
 							al= d.decode(str, Zkey);
@@ -403,9 +406,12 @@ public class CLIENT {
 										str+=(char)tmp2;
 								}
 								
+								
 								al = d.decode(str, Zkey);
+								tt2.append("收到"+(int)str.charAt(0)+"号包,正在下载"+al.get(1)+"文件");
 								
 								if(al.get(0).charAt(0)==b){
+									JOptionPane.showMessageDialog(null, "下载完成！","完成",JOptionPane.INFORMATION_MESSAGE);
 									break;
 								}
 							
@@ -520,6 +526,7 @@ public class CLIENT {
 		****/
 	}
 	static TextArea t4= new TextArea(20,53);
+	static TextArea tt2= new TextArea(19,39);
 	static class ClientUI extends JFrame{
 
 		JButton bt1=new JButton("请求认证");	
@@ -543,7 +550,7 @@ public class CLIENT {
 		class MyFramePanel extends JFrame{
 				
 				//TextArea tt1= new TextArea(19,39);
-				TextArea tt2= new TextArea(19,39);
+				
 				JPanel p1 = new JPanel();
 				JPanel p2 = new JPanel();		
 				JLabel l1 = new JLabel("上传文件路径");
