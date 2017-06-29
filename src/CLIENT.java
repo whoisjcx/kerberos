@@ -364,6 +364,9 @@ public class CLIENT {
 						}
 						if(DO()!=0){
 							
+							System.out.println("NAME"+downname);
+							System.out.println("FILE"+downfile);
+							
 							
 							
 							DO0();
@@ -538,7 +541,7 @@ public class CLIENT {
 					});
 					b2.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent e){	
-							downname=t2.getText();
+							downfile=t2.getText();
 							//download=1;
 							DO1();
 						}
@@ -577,6 +580,8 @@ public class CLIENT {
 				protected void do_user_valueChanged(ListSelectionEvent e){
 			    	System.out.println(list1.getSelectedIndex());
 			    	System.out.println(list1.getSelectedValue());
+			    	downname=list1.getSelectedValue().toString();
+			    	System.out.println(downname);
 			    	//text3.setText(list1.getSelectedValue().toString());
 			    }
 			}	
