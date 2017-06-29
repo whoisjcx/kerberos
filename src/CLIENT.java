@@ -51,6 +51,7 @@ public class CLIENT {
 	static String downname="";
 	static String downfile="";
 	static String Kcv="00000000";
+	static String Kas="00000000";
 	static JFrame jf = new JFrame("Client");
 	ArrayList<String> key=new ArrayList<String>();
 	String[] pack1={"Kc-tgs:","IDtgs:","Time:","Lifetime:","Ticket:"};
@@ -64,7 +65,7 @@ public class CLIENT {
 		ipAS=cipAS;
 		ipTGS=cipTGS;
 		ipSERVER=cipSERVER;
-		key.add("00000000");
+		key.add(Kas);
 	}
 	void Cstar(){
 		new SendAndReceive ().start();
@@ -527,13 +528,16 @@ public class CLIENT {
 		JTextField t1=new JTextField(30);
 		JTextField t2=new JTextField(30);
 		JTextField t3=new JTextField(30);
+		JTextField t5=new JTextField(30);
 		JLabel l1=new JLabel("用户名    ");
+		JLabel l5=new JLabel("用户KEY  ");
+		
 		JLabel l2=new JLabel("服务器名");
 		JLabel l3=new JLabel("服务器IP ");
 		JPanel p1=new JPanel();
 		JPanel p2=new JPanel();
 		JPanel p3=new JPanel();
-		//JPanel p4=new JPanel();
+		JPanel p4=new JPanel();
 
 
 		class MyFramePanel extends JFrame{
@@ -632,7 +636,7 @@ public class CLIENT {
 		ClientUI(){
 			
 			
-			jf.setSize(410,490);
+			jf.setSize(410,520);
 			jf.setResizable(false);
 			Container container=jf.getContentPane();
 			//FlowLayout fleft=new FlowLayout(FlowLayout.CENTER,10,10);
@@ -646,7 +650,8 @@ public class CLIENT {
 			t3.setText("127.0.0.1");
 			p3.add(l1);
 			p3.add(t1);
-			
+			p3.add(l5);
+			p3.add(t5);
 			p2.setLayout(fright);
 			p2.add(bt1);
 			p2.add(bt2);
@@ -692,9 +697,10 @@ public class CLIENT {
 			ipSERVER=t3.getText();
 			IDc=t1.getText();
 			IDtgs="IDtgs123";
+			Kas=t5.getText();
 			IDv=t2.getText();
-			if(IDc.length()!=8||IDv.length()!=8){
-				JOptionPane.showMessageDialog(this, "请输入合法ID","警告",JOptionPane.INFORMATION_MESSAGE);
+			if(Kas.length()!=8||IDc.length()!=8||IDv.length()!=8){
+				JOptionPane.showMessageDialog(this, "不合法输入","警告",JOptionPane.INFORMATION_MESSAGE);
 				return;
 			} 
 
