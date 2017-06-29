@@ -235,7 +235,7 @@ public class AS {
 				JPanel p1 = new JPanel();
 				JPanel p2 = new JPanel();		
 				JLabel l1 = new JLabel("事件");
-				JLabel l2 = new JLabel("包from->to");
+				JLabel l2 = new JLabel("包的情况");
 				JButton b1 = new JButton("清屏");
 				JButton b2 = new JButton("清屏");
 				MyFramePanel(){
@@ -251,6 +251,28 @@ public class AS {
 					p2.add(t2);
 					p1.add(b1);
 					p2.add(b2);
+					
+					b1.setFont(new Font("宋体",Font.PLAIN,15));
+					b1.setForeground(Color.BLUE);
+					b1.setBackground(Color.PINK);
+					b1.setBorderPainted(false);
+					b2.setFont(new Font("宋体",Font.PLAIN,15));
+					b2.setForeground(Color.BLUE);
+					b2.setBackground(Color.PINK);
+					b2.setBorderPainted(false);
+					l1.setFont(new Font("宋体",Font.PLAIN,15));
+					l2.setFont(new Font("宋体",Font.PLAIN,15));
+					
+					b1.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							t1.setText("Listening......");
+						}
+					});
+					b2.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							t2.setText("");
+						}
+					});
 				
 					t1.setText("Listening......\n\n");	
 					container.add(p1);
@@ -259,6 +281,29 @@ public class AS {
 					this.setTitle("AS服务器");
 					this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					this.setVisible(true);
+					
+					setLocation(200, 50);  
+			        //背景图片的路径。（相对路径或者绝对路径。本例图片放于"java项目名"的文件下）  
+			        String path = "background.jpg";  
+			        // 背景图片  
+			        ImageIcon background = new ImageIcon(path);  
+			        // 把背景图片显示在一个标签里面  
+			        JLabel label = new JLabel(background);  
+			        // 把标签的大小位置设置为图片刚好填充整个面板  
+			        label.setBounds(0, 0, this.getWidth(), this.getHeight());  
+			        // 把内容窗格转化为JPanel，否则不能用方法setOpaque()来使内容窗格透明  
+			        JPanel imagePanel = (JPanel) this.getContentPane();  
+			        imagePanel.setOpaque(false);  
+			        			      
+			        // 把背景图片添加到分层窗格的最底层作为背景  
+			        this.getLayeredPane().add(label, new Integer(Integer.MIN_VALUE));  
+			      
+			        p1.setOpaque(false);//也要让他透明
+					p2.setOpaque(false);//也要让他透明
+					//t1.setOpaque(false);//也要让他透明
+					//t2.setOpaque(false);//也要让他透明
+			        //设置可见  
+			        setVisible(true); 
 				} 								
 		}	
 	
