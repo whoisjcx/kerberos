@@ -44,6 +44,14 @@ public class SERVER {
 		public SendThread(Socket socket){
 			this.socket=socket;
 		}
+		protected void finalize(){
+			try {
+				socket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		@Override
 		public void run(){
@@ -146,7 +154,10 @@ public class SERVER {
 					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
+					demo.enddelete(vc.getnewS().get(2));
+					return;
 				}
 			}
 			
@@ -308,8 +319,7 @@ class MyList {
 		{
 			if(userlist.get(i).equals(str))
 			{
-				userlist.remove(i);
-				message.remove(i);
+				message.set(i, message.get(i)+"\n½áÊø£¡£¡");
 			}
 		}
 	}
