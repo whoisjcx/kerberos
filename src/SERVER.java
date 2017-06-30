@@ -106,10 +106,8 @@ public class SERVER {
 
 					temAL=d.decode(str, vc.getnewKey());
 					
-					for(int i=0;i<temAL.size();++i)
-					{
-						demo.addmessage(vc.getS().get(2), temAL.get(i));
-					}
+					demo.addmessage(vc.getS().get(2), "收到包\n");
+					
 					System.out.println(vc.getS().get(2));
 					
 					System.out.println(temAL);
@@ -303,21 +301,22 @@ class MyList {
 	//DefaultListModel message=new DefaultListModel();
 	//Vector<String> userlist = new Vector<String>();
 	Vector<String> filelist = new Vector<String>();
-	Vector<String> message = new Vector<String>();
+	//Vector<String> message = new Vector<String>();
 	
 	@SuppressWarnings("unchecked")
 	public void beginadd(String user,String messa){
 		userlist.addElement(user);
-		message.add(messa);
+		//message.add(messa);
+		text3.append(messa+"\n");
 	}
 	@SuppressWarnings("rawtypes")
 	public DefaultListModel getuserlist()
 	{
 		return userlist;
 	}
-	public Vector<String> getmessage()
+	public String getmessage()
 	{
-		return message;
+		return text3.getText();
 	}
 	
 	public void enddelete(String str)
@@ -327,9 +326,10 @@ class MyList {
 		{
 			if(userlist.get(i).equals(str))
 			{
-				message.set(i, message.get(i)+"\n结束！！");
+				//message.set(i, message.get(i)+"\n结束！！");
 				//list1.remove(i);
-				message.remove(i);
+				//message.remove(i);
+				text3.append(str + "离开！\n");
 				userlist.remove(i);
 				list1.repaint();
 			}
@@ -342,7 +342,8 @@ class MyList {
 		{
 			if(userlist.get(i).equals(str1))
 			{
-				message.set(i, message.get(i)+"\n"+str2);
+				//message.set(i, message.get(i)+"\n"+str2);
+				text3.append(str2);
 			}
 		}
 	}
@@ -407,7 +408,6 @@ class MyList {
     
     protected void do_user_valueChanged(ListSelectionEvent e){
     	System.out.println(list1.getSelectedIndex());
-    	text3.setText(message.get(list1.getSelectedIndex()));
     }
 }
 
