@@ -105,7 +105,7 @@ public class SERVER {
 					
 					System.out.println(vc.getS().get(2));
 					
-					System.out.println(temAL);
+					//System.out.println(temAL);
 					switch(temAL.get(0).charAt(0)){
 						case ((1)<<4):{
 							demo.addmessage(vc.getS().get(2), "请求文件列表\n");

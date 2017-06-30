@@ -130,6 +130,7 @@ public class CLIENT {
 					tmp2=str1.charAt(0);
 					if(tmp2!=1){
 						OK=0;
+						JOptionPane.showMessageDialog( jf,"认证失败","服务",JOptionPane.INFORMATION_MESSAGE);
 						socket.close();
 						return;
 					}
@@ -200,6 +201,7 @@ public class CLIENT {
 					tmp2=str2.charAt(0);
 					if(tmp2!=3){
 						OK=0;
+						JOptionPane.showMessageDialog( jf,"认证失败","服务",JOptionPane.INFORMATION_MESSAGE);
 						socket.close();
 						return;
 					}
@@ -209,6 +211,7 @@ public class CLIENT {
 					
 					if(res==null){
 						OK=0;
+						JOptionPane.showMessageDialog( jf,"认证失败","服务",JOptionPane.INFORMATION_MESSAGE);
 						socket.close();
 						return;
 					}
@@ -254,6 +257,7 @@ public class CLIENT {
 					tmp2=str.charAt(0);
 					if(tmp2!=5){
 						OK=0;
+						JOptionPane.showMessageDialog( jf,"认证失败","服务",JOptionPane.INFORMATION_MESSAGE);
 						socket.close();
 						return;
 					}
