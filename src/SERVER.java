@@ -73,13 +73,8 @@ public class SERVER {
 				key.add(Ktgsv);
 				vc.setS(d.decode(str, key));
 				
-				String text3="";
-				for(int i=0;i<vc.getS().size();++i)
-				{
-					text3+=vc.getS().get(i);
-					text3+="\n";
-				}
-				
+				String text3="收到" + (int)vc.getS().get(0).charAt(0)+"号包," + vc.getS().get(2) + "登录\n";
+
 				demo.beginadd(vc.getS().get(2), text3);
 				
 			} catch (IOException e) {
@@ -106,13 +101,14 @@ public class SERVER {
 
 					temAL=d.decode(str, vc.getnewKey());
 					
-					demo.addmessage(vc.getS().get(2), "收到包\n");
+					demo.addmessage(vc.getS().get(2), "收到" + (int)temAL.get(0).charAt(0) + "号包,内容为:");
 					
 					System.out.println(vc.getS().get(2));
 					
 					System.out.println(temAL);
 					switch(temAL.get(0).charAt(0)){
 						case ((1)<<4):{
+							demo.addmessage(vc.getS().get(2), "请求文件列表\n");
 							vtoc00100000 v = new vtoc00100000(temAL,demo.getfilename(),vc.getnewKey());
 							System.out.println("SEND"+v.getwillsend());
 							writer.print(v.getwillsend());
@@ -120,13 +116,14 @@ public class SERVER {
 						
 						};break;
 						case ((5)<<4):{
+							demo.addmessage(vc.getS().get(2), "请求下载文件"+ temAL.get(1) +"\n");
 							vtoc00110000 v = new vtoc00110000(vc.getnewKey(), temAL);
 							String filename = demo.getPath() + "\\" + v.getfilename();
 							
 							FileInputStream fin=null;
 							fin = new FileInputStream(new File(filename));
 					        byte[] sendByte = null;
-					        sendByte = new byte[1024*10];
+					        sendByte = new byte[1024*5];
 					        int length = 0;
 					        String sendstr = "";
 					        while((length = fin.read(sendByte, 0, sendByte.length))>0){
@@ -147,6 +144,7 @@ public class SERVER {
 							
 						};break;
 						case ((3)<<4):{
+							demo.addmessage(vc.getS().get(2), "收到上传文件"+ temAL.get(1) +"\n");
 							System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
 							ctov00110000 c = new ctov00110000(temAL, demo.getPath());
 							

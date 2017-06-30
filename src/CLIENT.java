@@ -317,7 +317,7 @@ public class CLIENT {
 							FileInputStream fin=null;
 							fin = new FileInputStream(new File(upname));
 					        byte[] sendByte = null;
-					        sendByte = new byte[1024*10];
+					        sendByte = new byte[1024*5];
 					        int length=0;
 					        String sendstr="";
 					        ArrayList<String> ALFILE = new ArrayList<String>();

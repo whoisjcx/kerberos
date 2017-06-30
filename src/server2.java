@@ -105,7 +105,7 @@ class ctov00110000{
         fout = new FileOutputStream(new File(Path),true);
         
         byte[] sendByte = null;
-        sendByte = new byte[1024*10];
+        sendByte = new byte[1024*5];
        
 		sendByte =  S.get(2).getBytes("ISO8859-1");
 		
